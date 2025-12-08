@@ -3,11 +3,11 @@ package org.example;
 import java.util.*;
 
 public class Transaction {
-    int transactionId;
-    List<TransactionItem> transactionItems = new ArrayList<>();
-    String date;
-    double totalAmount;
-    String transactionType;
+    private int transactionId;
+    private List<TransactionItem> transactionItems = new ArrayList<>();
+    private String date;
+    private double totalAmount;
+    private String transactionType;
 
     public Transaction(int transactionId,
                        List<TransactionItem> transactionItems,
@@ -28,10 +28,30 @@ public class Transaction {
         this(0, transactionItems, date, totalAmount, transactionType);
     }
 
+    public Transaction(int transactionId, String date, double totalAmount, String transactionType) {
+        this(transactionId, new ArrayList<>(), date, totalAmount, transactionType);
+    }
+
     public void calculateTotal() {
 //         iterate over the list
         for (TransactionItem transactionItem : this.transactionItems) {
             this.totalAmount += transactionItem.getSubTotal();
         }
+    }
+
+    public List<TransactionItem> getTransactionItems() {
+        return transactionItems;
+    }
+
+    public String getDate() {
+        return this.date;
+    }
+
+    public double getTotalAmount() {
+        return this.totalAmount;
+    }
+
+    public String getTransactionType() {
+        return this.transactionType;
     }
 }

@@ -1,52 +1,200 @@
 package org.example;
 
-import java.sql.Connection;
+import java.sql.*;
 import java.util.*;
 
-// abstract for now
 public class TransactionDAO {
     Connection conn = Database.getConn();
 
+    private TransactionDAO() {}
+
     public Transaction getTransaction(int transactionId) {
-        return null;
+        Transaction transaction = null;
+        String sql = "SELECT * FROM Transaction_ WHERE transactionId = ?";
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
+            stmt1.setInt(1, transactionId);
+            ResultSet rslt1 = stmt1.executeQuery();
+            if (rslt1.next()) {
+                transaction = new Transaction(
+                        rslt1.getInt("transactionId"),
+                        rslt1.getString("transactionDate"),
+                        rslt1.getDouble("totalAmount"),
+                        rslt1.getString("transactionType")
+                );
+            }
+            return transaction;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<Transaction> getAllTransactions() {
-        return null;
+        List<Transaction> transactions = new ArrayList<>();
+        String sql = "SELECT * FROM Transaction_";
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql);
+             ResultSet rslt1 = stmt1.executeQuery()) {
+                while (rslt1.next()) {
+                    transactions.add(new Transaction(
+                            rslt1.getInt("transactionId"),
+                            rslt1.getString("transactionDate"),
+                            rslt1.getDouble("totalAmount"),
+                            rslt1.getString("transactionType")
+                    ));
+                }
+                return transactions;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public TransactionItem getTransactionItem(int transactionItemId) {
-        return null;
+        TransactionItem transactionItem = null;
+        String sql = "SELECT * FROM TransactionItem WHERE transactionItemId = ?";
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
+            stmt1.setInt(1, transactionItemId);
+            ResultSet rslt1 = stmt1.executeQuery();
+            if (rslt1.next()) {
+                transactionItem = new TransactionItem(
+                        rslt1.getInt("transactionItemId"),
+                        rslt1.getInt("transactionId"),
+                        rslt1.getInt("materialId"),
+                        rslt1.getInt("quantity"),
+                        rslt1.getDouble("subTotal")
+                );
+            }
+            return transactionItem;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<TransactionItem> getAllTransactionItems() {
-        return null;
+        List<TransactionItem> transactionItems = new ArrayList<>();
+        String sql = "SELECT * FROM TransactionItem";
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql);
+        ResultSet rslt1 = stmt1.executeQuery()) {
+            while (rslt1.next()) {
+                transactionItems.add(new TransactionItem(
+                        rslt1.getInt("transactionItemId"),
+                        rslt1.getInt("transactionId"),
+                        rslt1.getInt("materialId"),
+                        rslt1.getInt("quantity"),
+                        rslt1.getDouble("subTotal")
+                ));
+            }
+            return transactionItems;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addTransaction(Transaction transaction) {
-
+        String sql = "INSERT INTO Transaction_ (transactionDate, totalAmount, transactionType)" +
+                "VALUES (?, ?, ?)";
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
+            stmt1.setString(1, transaction.getDate());
+            stmt1.setDouble(2, transaction.getTotalAmount());
+            stmt1.setString(3, transaction.getTransactionType());
+            stmt1.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<TransactionItem> getTransactionItemsByTransactionId(int transactionId) {
-        return null;
+        List<TransactionItem> transactionItems = new ArrayList<>();
+        String sql = "SELECT * FROM TransactionItem WHERE transactionId";
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
+            stmt1.setInt(1, transactionId);
+            ResultSet rslt1 = stmt1.executeQuery();
+            while (rslt1.next()) {
+                transactionItems.add(new TransactionItem(
+                        rslt1.getInt("transactionItemId"),
+                        rslt1.getInt("transactionId"),
+                        rslt1.getInt("materialId"),
+                        rslt1.getInt("quantity"),
+                        rslt1.getDouble("subTotal")
+                ));
+            }
+            return transactionItems;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void addTransactionItem(TransactionItem transactionItem) {}
-    public void deleteTransaction(int transactionId) {}
-    public void updateMaterialStock(Transaction transaction) {}
+    public void addTransactionItem(TransactionItem transactionItem) {
+        String sql = "INSERT INTO TransactionItem (transactionId, materialId, quantity, subTotal)" +
+                "VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
+            stmt1.setInt(1, transactionItem.getTransactionId());
+            stmt1.setInt(2, transactionItem.getMaterialId());
+            stmt1.setInt(3, transactionItem.getQuantity());
+            stmt1.setDouble(4, transactionItem.getSubTotal());
+            stmt1.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void deleteTransaction(int transactionId) {
+        String sql = "DELETE FROM Transaction_ WHERE transactionId = ?";
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
+            stmt1.setInt(1, transactionId);
+            stmt1.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public double totalMoneyFromBuying() {
-        return 0.0;
+        String sql = "SELECT SUM(totalAmount) as total FROM Transaction_ WHERE transactionType = 'buy'";
+        double total = 0.0;
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql);
+            ResultSet rslt1 = stmt1.executeQuery()) {
+            if (rslt1.next()) {
+                total = rslt1.getDouble("total");
+            }
+            return total;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     public double totalMoneyFromSelling() {
-
-        return 0.0;
+        String sql = "SELECT SUM(totalAmount) as total FROM Transaction_ WHERE transactionType = 'sell'";
+        double total = 0.0;
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql);
+             ResultSet rslt1 = stmt1.executeQuery()) {
+            if (rslt1.next()) {
+                total = rslt1.getDouble("total");
+            }
+            return total;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     public double averageTotalFromBuying() {
-
-        return 0.0;
+        String sql = "SELECT AVG(totalAmount) as total FROM Transaction_ WHERE transactionType = 'buy'";
+        double total = 0.0;
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql);
+             ResultSet rslt1 = stmt1.executeQuery()) {
+            if (rslt1.next()) {
+                total = rslt1.getDouble("total");
+            }
+            return total;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     public double averageTotalFromSelling() {
-
-        return 0.0;
+        String sql = "SELECT AVG(totalAmount) as total FROM Transaction_ WHERE transactionType = 'sell'";
+        double total = 0.0;
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql);
+             ResultSet rslt1 = stmt1.executeQuery()) {
+            if (rslt1.next()) {
+                total = rslt1.getDouble("total");
+            }
+            return total;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
