@@ -9,10 +9,13 @@ public class DatabaseSAMPLE {
     // I gatekept the actual Database.java file but this is pretty much
     // the exact same file but without the URL and PASSWORD, I assume you already
     // know how to set this up
+    // just rename this file, class, and private constructor to Database
     private static Connection conn;
-    final private static String URL = "";
-    final private static String USER = "root";
-    final private static String PASSWORD = "";
+    private static final String URL = "yourURL";
+    private static final String USER = "root";
+    private static final String PASSWORD = "yourPassword";
+
+    private DatabaseSAMPLE() {}
 
     public static Connection getConn() {
         if (conn == null) {

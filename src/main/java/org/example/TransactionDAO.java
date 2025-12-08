@@ -4,19 +4,49 @@ import java.sql.Connection;
 import java.util.*;
 
 // abstract for now
-public abstract class TransactionDAO {
+public class TransactionDAO {
     Connection conn = Database.getConn();
-    public abstract Transaction getTransaction(int transactionId);
-    public abstract List<Transaction> getAllTransactions();
-    public abstract TransactionItem getTransactionItem(int transactionItemId);
-    public abstract List<TransactionItem> getAllTransactionItems();
-    public abstract void addTransaction(Transaction transaction);
-    public abstract List<TransactionItem> getTransactionItemsByTransactionId(int transactionId);
-    public abstract void addTransactionItem(TransactionItem transactionItem);
-    public abstract void deleteTransaction(int transactionId);
-    public abstract void updateMaterialStock(Transaction transaction);
-    public abstract double totalMoneyFromBuying();
-    public abstract double totalMoneyFromSelling();
-    public abstract double averageTotalFromBuying();
-    public abstract double averageTotalFromSelling();
+
+    public Transaction getTransaction(int transactionId) {
+        return null;
+    }
+
+    public List<Transaction> getAllTransactions() {
+        return null;
+    }
+
+    public TransactionItem getTransactionItem(int transactionItemId) {
+        return null;
+    }
+
+    public List<TransactionItem> getAllTransactionItems() {
+        return null;
+    }
+
+    public void addTransaction(Transaction transaction) {
+
+    }
+
+    public List<TransactionItem> getTransactionItemsByTransactionId(int transactionId) {
+        return null;
+    }
+
+    public void addTransactionItem(TransactionItem transactionItem) {}
+    public void deleteTransaction(int transactionId) {}
+    public void updateMaterialStock(Transaction transaction) {}
+    public double totalMoneyFromBuying() {
+        return 0.0;
+    }
+    public double totalMoneyFromSelling() {
+
+        return 0.0;
+    }
+    public double averageTotalFromBuying() {
+
+        return 0.0;
+    }
+    public double averageTotalFromSelling() {
+
+        return 0.0;
+    }
 }
