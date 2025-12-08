@@ -2,6 +2,7 @@ package org.example;
 
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class MaterialDAO {
     static Connection conn = Database.getConn();
@@ -69,6 +70,35 @@ public class MaterialDAO {
             stmt1.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void updateMaterialStock(Transaction transaction) {
+        if (transaction.getTransactionType().strip().equalsIgnoreCase("sell")) {
+            for (TransactionItem transactionItem : transaction.getTransactionItems()) {
+                String sql = "UPDATE Material SET stockQuantity = stockQuantity - ? WHERE materialId = ?";
+                try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
+                    stmt1.setInt(1, transactionItem.getQuantity());
+                    stmt1.setInt(2, transactionItem.getMaterialId());
+                    stmt1.executeUpdate();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } else if (transaction.getTransactionType().strip().equalsIgnoreCase("buy")) {
+            for (TransactionItem transactionItem : transaction.getTransactionItems()) {
+                String sql = "UPDATE Material SET stockQuantity = stockQuantity + ? WHERE materialId = ?";
+                try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
+                    stmt1.setInt(1, transactionItem.getQuantity());
+                    stmt1.setInt(2, transactionItem.getMaterialId());
+                    stmt1.executeUpdate();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } else {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.info("Transaction type is not recognized.");
         }
     }
 }

@@ -4,23 +4,18 @@ public class TransactionItem {
     private int transactionItemId;
     private int transactionId;
     private int materialId;
-    private double quantity;
+    private int quantity;
     private double subTotal;
     public TransactionItem(int transactionItemId,
                            int transactionId,
                            int materialId,
-                           double quantity,
+                           int quantity,
                            double subTotal) {
         this.transactionItemId = transactionItemId;
         this.transactionId = transactionId;
         this.materialId = materialId;
         this.quantity = quantity;
         this.subTotal = subTotal;
-    }
-
-    public TransactionItem(int materialId,
-                           double quantity) {
-        this(0, 0, materialId, quantity, 0);
     }
 
     public void calculateSubtotal() {
@@ -31,5 +26,17 @@ public class TransactionItem {
 
     public double getSubTotal() {
         return this.subTotal;
+    }
+
+    public int getMaterialId() {
+        return this.materialId;
+    }
+
+    public int getTransactionId() {
+        return this.transactionId;
+    }
+
+    public int getQuantity() {
+        return this.quantity;
     }
 }
