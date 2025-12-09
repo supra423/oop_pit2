@@ -73,7 +73,7 @@ public class MaterialDAO {
         }
     }
 
-    public void updateMaterialStock(Transaction transaction) {
+    public static void updateMaterialStock(Transaction transaction) {
         if (transaction.getTransactionType().strip().equalsIgnoreCase("sell")) {
             for (TransactionItem transactionItem : transaction.getTransactionItems()) {
                 String sql = "UPDATE Material SET stockQuantity = stockQuantity - ? WHERE materialId = ?";
@@ -97,8 +97,7 @@ public class MaterialDAO {
                 }
             }
         } else {
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.info("Transaction type is not recognized.");
+            System.out.println("Transaction type is not recognized");
         }
     }
 }
