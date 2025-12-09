@@ -3,6 +3,10 @@ package org.example;
 import java.sql.*;
 import java.util.*;
 
+// just for clarification, the Transaction_ table is named like that
+// because the word Transaction itself is already a SQL keyword,
+// so i have to put a "_" to make it a valid identifier
+
 public class TransactionDAO {
     Connection conn = Database.getConn();
 
@@ -136,8 +140,18 @@ public class TransactionDAO {
         }
     }
     public void deleteTransaction(int transactionId) {
-        String sql = "DELETE FROM Transaction_ WHERE transactionId = ?";
+        // this bad boy deletes TransactionItems that are referencing a particular
+        // Transaction row, then after that it deletes the Transaction row itself
+        String sql = "DELETE FROM TransactionItem WHERE transactionId = ?";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
+            stmt1.setInt(1, transactionId);
+            stmt1.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        String sql1 = "DELETE FROM Transaction_ WHERE transactionId = ?";
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql1)) {
             stmt1.setInt(1, transactionId);
             stmt1.executeUpdate();
         } catch (SQLException e) {
