@@ -1,5 +1,8 @@
 package org.example.GUI;
 
+import org.example.Material;
+import org.example.MaterialDAO;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -29,6 +32,22 @@ public class AdminInterface extends JFrame {
     static {
         Image resizedImage = rawLogo.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         logo = new ImageIcon(resizedImage);
+        operationButtons[0].addActionListener(e -> {
+//            MaterialDAO.addMaterial();
+        });
+        operationButtons[1].addActionListener(e -> {});
+        operationButtons[2].addActionListener(e -> {});
+        operationButtons[3].addActionListener(e -> {});
+        operationButtons[4].addActionListener(e -> {});
+        operationButtons[5].addActionListener(e -> {});
+        operationButtons[6].addActionListener(e -> {});
+        operationButtons[7].addActionListener(e -> {});
+        operationButtons[8].addActionListener(e -> {});
+        operationButtons[9].addActionListener(e -> {});
+        operationButtons[10].addActionListener(e -> {});
+        operationButtons[11].addActionListener(e -> {});
+        operationButtons[12].addActionListener(e -> {});
+        operationButtons[13].addActionListener(e -> {});
     }
     public AdminInterface() {
         setTitle("The Garage");
@@ -56,6 +75,9 @@ public class AdminInterface extends JFrame {
         adminLabel.setBorder(new EmptyBorder(0, 10, 0, 10));
 
         JPanel mainPanel = new JPanel(new GridBagLayout());
+        JScrollPane mainScrollPane = new JScrollPane(mainPanel);
+        mainScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        mainScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         mainPanel.setBackground(Color.decode("#141414"));
         mainPanel.setPreferredSize(new Dimension(1288, 900));
 
@@ -70,7 +92,7 @@ public class AdminInterface extends JFrame {
         JPanel middlePanel = new JPanel(new GridBagLayout());
         middlePanel.setPreferredSize(new Dimension(923, 686));
         middlePanel.setBackground(Color.decode("#141414"));
-        JPanel bottomPanel = new JPanel();
+        JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setPreferredSize(new Dimension(923, 96));
         bottomPanel.setBackground(Color.decode("#141414"));
         JPanel separator1 = new JPanel();
@@ -79,6 +101,12 @@ public class AdminInterface extends JFrame {
         JPanel separator2 = new JPanel();
         separator2.setPreferredSize(new Dimension(923, 1));
         separator2.setBackground(Color.decode("#FFFFFF"));
+
+        JPanel backButtonPanel = new JPanel();
+        backButtonPanel.setBackground(Color.decode("#141414"));
+        backButtonPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
+        JButton backButton = LandingPage.createStyledButton("BACK", 24);
+        backButton.setPreferredSize(new Dimension(150, 50));
 
         JTextArea outputArea = new JTextArea();
         outputArea.setPreferredSize(new Dimension(879, 650));
@@ -95,17 +123,17 @@ public class AdminInterface extends JFrame {
         // scrollable panel inside the right panel
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.setPreferredSize(new Dimension(305, 1400));
-        JScrollPane scrollPane = new JScrollPane(buttonPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(12, 0));
-        scrollPane.setPreferredSize(new Dimension(335, 875));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(10);
-        scrollPane.setBorder(null);
-        scrollPane.getViewport().setBorder(null);
+        JScrollPane buttonScrollPane = new JScrollPane(buttonPanel);
+        buttonScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        buttonScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        buttonScrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(12, 0));
+        buttonScrollPane.setPreferredSize(new Dimension(335, 875));
+        buttonScrollPane.getVerticalScrollBar().setUnitIncrement(10);
+        buttonScrollPane.setBorder(null);
+        buttonScrollPane.getViewport().setBorder(null);
         buttonPanel.setBackground(Color.decode("#141414"));
 
-        add(mainPanel, BorderLayout.CENTER);
+        add(mainScrollPane, BorderLayout.CENTER);
         gbc.gridx = 0;
         mainPanel.add(leftPanel, gbc);
         gbc.gridx = 1;
@@ -143,8 +171,10 @@ public class AdminInterface extends JFrame {
             operationButtons[i].setPreferredSize(new Dimension(0, 50));
             buttonPanel.add(operationButtons[i], gbcButtons);
         }
-        rightPanel.add(scrollPane, gbc);
+        rightPanel.add(buttonScrollPane, gbc);
 
+        backButtonPanel.add(backButton);
+        bottomPanel.add(backButtonPanel, BorderLayout.WEST);
         pack();
     }
 }
