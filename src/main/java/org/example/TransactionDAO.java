@@ -8,7 +8,7 @@ import java.util.*;
 // so i have to put a "_" to make it a valid identifier
 
 public class TransactionDAO {
-    Connection conn = Database.getConn();
+    static Connection conn = Database.getConn();
 
     private TransactionDAO() {}
 
@@ -107,7 +107,7 @@ public class TransactionDAO {
 
     public List<TransactionItem> getTransactionItemsByTransactionId(int transactionId) {
         List<TransactionItem> transactionItems = new ArrayList<>();
-        String sql = "SELECT * FROM TransactionItem WHERE transactionId";
+        String sql = "SELECT * FROM TransactionItem WHERE transactionId = ?";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
             stmt1.setInt(1, transactionId);
             ResultSet rslt1 = stmt1.executeQuery();

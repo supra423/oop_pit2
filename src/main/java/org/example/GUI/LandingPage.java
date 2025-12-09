@@ -38,7 +38,7 @@ public class LandingPage extends JFrame {
         // Add spacing to push button to bottom
         mainPanel.add(Box.createVerticalGlue());
 
-        JButton startButton = createStyledButton("START");
+        JButton startButton = createStyledButton("START", 24);
         startButton.addActionListener(e -> openDashboard());
 
         JPanel buttonPanel = new JPanel();
@@ -52,7 +52,7 @@ public class LandingPage extends JFrame {
         setVisible(true);
     }
 
-    private JButton createStyledButton(String text) {
+    public static JButton createStyledButton(String text, int size) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -68,7 +68,7 @@ public class LandingPage extends JFrame {
         };
 
         button.setPreferredSize(new Dimension(200, 60));
-        button.setFont(new Font("Montserrat", Font.BOLD, 24));
+        button.setFont(new Font("Montserrat", Font.BOLD, size));
         button.setForeground(new Color(26, 26, 26));
         button.setBackground(Color.WHITE);
         button.setFocusPainted(false);
