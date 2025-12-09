@@ -10,26 +10,10 @@ public class DatabaseSAMPLE {
     // of this file to the Database.java file and replace the class name and constructor
     // to Database instead of Database.java file, DON'T TOUCH THIS FILE ITSELF
     private static Connection conn;
-
-
     private static final String URL = "yourURL";
-
-
     private static final String USER = "root";
-
-
     private static final String PASSWORD = "yourPassword";
-
-
-
-
-
     private DatabaseSAMPLE() {}
-
-
-
-
-
     public static Connection getConn() {
         if (conn == null) {
             try {

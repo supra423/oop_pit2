@@ -1,4 +1,4 @@
-package org.example;
+package org.example.GUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,15 +9,13 @@ public class LandingPage extends JFrame {
 
     public LandingPage() {
         setTitle("The Garage");
-        setSize(1288, 966); // Match your image dimensions
+        setSize(1288, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
-        // Create panel with background image
         JPanel mainPanel = new JPanel() {
             private Image backgroundImage;
-
             {
                 try {
                     backgroundImage = new ImageIcon(getClass().getResource("/landingpage.png")).getImage();
@@ -25,7 +23,6 @@ public class LandingPage extends JFrame {
                     System.out.println("Background image not found: " + e.getMessage());
                 }
             }
-
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -41,18 +38,18 @@ public class LandingPage extends JFrame {
         // Add spacing to push button to bottom
         mainPanel.add(Box.createVerticalGlue());
 
-        // START button
         JButton startButton = createStyledButton("START");
         startButton.addActionListener(e -> openDashboard());
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setOpaque(false); // Make transparent to show background
+        buttonPanel.setOpaque(false);
         buttonPanel.add(startButton);
 
         mainPanel.add(buttonPanel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 50)));
 
         add(mainPanel);
+        setVisible(true);
     }
 
     private JButton createStyledButton(String text) {
@@ -62,9 +59,8 @@ public class LandingPage extends JFrame {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                // Paint rounded background
                 g2.setColor(getBackground());
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50); // 30 is corner radius
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50);
 
                 g2.dispose();
                 super.paintComponent(g);
@@ -110,15 +106,7 @@ public class LandingPage extends JFrame {
     private void openDashboard() {
         this.dispose();
         SwingUtilities.invokeLater(() -> {
-            DashboardInterface dashboard = new DashboardInterface();
-            dashboard.setVisible(true);
-        });
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            LandingPage landingPage = new LandingPage();
-            landingPage.setVisible(true);
+            new DashboardInterface();
         });
     }
 }
