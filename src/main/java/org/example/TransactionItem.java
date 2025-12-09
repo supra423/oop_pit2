@@ -39,4 +39,9 @@ public class TransactionItem {
     public int getQuantity() {
         return this.quantity;
     }
+
+    @Override
+    public String toString() {
+        return "TransactionItem[TransactionItemId='" + this.transactionItemId + "', transactionId='" + this.transactionId + "', materialId=" + this.materialId + "', quantity=" + this.quantity + "', subTotal=" + this.subTotal + "]";
+    }
 }
