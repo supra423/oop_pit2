@@ -54,4 +54,9 @@ public class Transaction {
     public String getTransactionType() {
         return this.transactionType;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction[TransactionId='" + this.transactionId + "', date(YYYY-MM-DD)='" + this.date + "', totalAmount=" + this.totalAmount + "', transactionType=" + this.transactionType + "]";
+    }
 }

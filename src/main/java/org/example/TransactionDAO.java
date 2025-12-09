@@ -12,7 +12,7 @@ public class TransactionDAO {
 
     private TransactionDAO() {}
 
-    public Transaction getTransaction(int transactionId) {
+    public static Transaction getTransaction(int transactionId) {
         Transaction transaction = null;
         String sql = "SELECT * FROM Transaction_ WHERE transactionId = ?";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
@@ -32,7 +32,7 @@ public class TransactionDAO {
         }
     }
 
-    public List<Transaction> getAllTransactions() {
+    public static List<Transaction> getAllTransactions() {
         List<Transaction> transactions = new ArrayList<>();
         String sql = "SELECT * FROM Transaction_";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql);
@@ -51,7 +51,7 @@ public class TransactionDAO {
         }
     }
 
-    public TransactionItem getTransactionItem(int transactionItemId) {
+    public static TransactionItem getTransactionItem(int transactionItemId) {
         TransactionItem transactionItem = null;
         String sql = "SELECT * FROM TransactionItem WHERE transactionItemId = ?";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
@@ -72,7 +72,7 @@ public class TransactionDAO {
         }
     }
 
-    public List<TransactionItem> getAllTransactionItems() {
+    public static List<TransactionItem> getAllTransactionItems() {
         List<TransactionItem> transactionItems = new ArrayList<>();
         String sql = "SELECT * FROM TransactionItem";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql);
@@ -92,7 +92,7 @@ public class TransactionDAO {
         }
     }
 
-    public void addTransaction(Transaction transaction) {
+    public static void addTransaction(Transaction transaction) {
         String sql = "INSERT INTO Transaction_ (transactionDate, totalAmount, transactionType)" +
                 "VALUES (?, ?, ?)";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
@@ -105,7 +105,7 @@ public class TransactionDAO {
         }
     }
 
-    public List<TransactionItem> getTransactionItemsByTransactionId(int transactionId) {
+    public static List<TransactionItem> getTransactionItemsByTransactionId(int transactionId) {
         List<TransactionItem> transactionItems = new ArrayList<>();
         String sql = "SELECT * FROM TransactionItem WHERE transactionId = ?";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
@@ -126,7 +126,7 @@ public class TransactionDAO {
         }
     }
 
-    public void addTransactionItem(TransactionItem transactionItem) {
+    public static void addTransactionItem(TransactionItem transactionItem) {
         String sql = "INSERT INTO TransactionItem (transactionId, materialId, quantity, subTotal)" +
                 "VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
@@ -139,7 +139,7 @@ public class TransactionDAO {
             throw new RuntimeException(e);
         }
     }
-    public void deleteTransaction(int transactionId) {
+    public static void deleteTransaction(int transactionId) {
         // this bad boy deletes TransactionItems that are referencing a particular
         // Transaction row, then after that it deletes the Transaction row itself
         String sql = "DELETE FROM TransactionItem WHERE transactionId = ?";
@@ -159,7 +159,7 @@ public class TransactionDAO {
         }
     }
 
-    public double totalMoneyFromBuying() {
+    public static double totalMoneyFromBuying() {
         String sql = "SELECT SUM(totalAmount) as total FROM Transaction_ WHERE transactionType = 'buy'";
         double total = 0.0;
         try (PreparedStatement stmt1 = conn.prepareStatement(sql);
@@ -172,7 +172,7 @@ public class TransactionDAO {
             throw new RuntimeException(e);
         }
     }
-    public double totalMoneyFromSelling() {
+    public static double totalMoneyFromSelling() {
         String sql = "SELECT SUM(totalAmount) as total FROM Transaction_ WHERE transactionType = 'sell'";
         double total = 0.0;
         try (PreparedStatement stmt1 = conn.prepareStatement(sql);
@@ -185,7 +185,7 @@ public class TransactionDAO {
             throw new RuntimeException(e);
         }
     }
-    public double averageTotalFromBuying() {
+    public static double averageTotalFromBuying() {
         String sql = "SELECT AVG(totalAmount) as total FROM Transaction_ WHERE transactionType = 'buy'";
         double total = 0.0;
         try (PreparedStatement stmt1 = conn.prepareStatement(sql);
@@ -198,7 +198,7 @@ public class TransactionDAO {
             throw new RuntimeException(e);
         }
     }
-    public double averageTotalFromSelling() {
+    public static double averageTotalFromSelling() {
         String sql = "SELECT AVG(totalAmount) as total FROM Transaction_ WHERE transactionType = 'sell'";
         double total = 0.0;
         try (PreparedStatement stmt1 = conn.prepareStatement(sql);
