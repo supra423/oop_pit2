@@ -38,4 +38,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
-/src/main/java/org/example/Database.java
+/src/main/java/org/example/Model/Database.java
