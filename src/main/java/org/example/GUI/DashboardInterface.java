@@ -70,11 +70,11 @@ public class DashboardInterface extends JFrame {
         leftPanel.setBackground(Color.decode("#141414"));
 
         JLabel materialsLabel = new JLabel("Materials Available");
-        materialsLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        materialsLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
         materialsLabel.setForeground(Color.decode("#FFFFFF"));
         materialsLabel.setBackground(Color.decode("#3C3C3C"));
         materialsLabel.setOpaque(true);
-        materialsLabel.setBorder(new EmptyBorder(10, 15, 10, 15));
+        materialsLabel.setBorder(new EmptyBorder(20, 15, 20, 15));
 
         // Table for materials
         String[] columnNames = {"Material Name", "Price", "Quantity"};
@@ -103,41 +103,40 @@ public class DashboardInterface extends JFrame {
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setBackground(Color.decode("#141414"));
 
-        JLabel totalLabel = new JLabel("TOTAL:");
-        totalLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        JLabel totalLabel = new JLabel("ITEMS");
+        totalLabel.setFont(new Font("Sanserif", Font.BOLD, 20));
         totalLabel.setForeground(Color.decode("#FFFFFF"));
         totalLabel.setBackground(Color.decode("#3C3C3C"));
         totalLabel.setOpaque(true);
-        totalLabel.setBorder(new EmptyBorder(10, 15, 10, 15));
+        totalLabel.setBorder(new EmptyBorder(20, 15, 20, 15));
 
         totalArea.setEditable(false);
-        totalArea.setFont(new Font("Monospaced", Font.BOLD, 36));
+        totalArea.setFont(new Font("Monospace", Font.BOLD, 36));
         totalArea.setBackground(Color.decode("#D9D9D9"));
         JScrollPane totalScrollPane = new JScrollPane(totalArea);
 
         rightPanel.add(totalLabel, BorderLayout.NORTH);
         rightPanel.add(totalScrollPane, BorderLayout.CENTER);
 
-        // Add left and right panels to content panel
-        GridBagConstraints contentGbc = new GridBagConstraints();
+        GridBagConstraints contentGbc = new GridBagConstraints(); //controls the Material panels' position
         contentGbc.fill = GridBagConstraints.BOTH;
         contentGbc.weightx = 1.0;
         contentGbc.weighty = 1.0;
         contentGbc.gridx = 0;
         contentGbc.gridy = 0;
-        contentGbc.insets = new Insets(50, 50, 50, 50); //Material panel (iya spacing)
+        contentGbc.insets = new Insets(50, 50, 50, 50);
         contentPanel.add(leftPanel, contentGbc);
 
-        contentGbc.fill = GridBagConstraints.VERTICAL;
+        contentGbc.fill = GridBagConstraints.VERTICAL; //controls the Vertical separators' position
         contentGbc.weightx = 0;
         contentGbc.gridx = 1;
-        contentGbc.insets = new Insets(10, 5, 10, 5); //Line between Material and Total panel (iya spacing)
+        contentGbc.insets = new Insets(10, 5, 10, 5);
         contentPanel.add(verticalSeparator, contentGbc);
 
-        contentGbc.fill = GridBagConstraints.BOTH;
+        contentGbc.fill = GridBagConstraints.BOTH; //controls the size/spacing of the Item panels' position
         contentGbc.weightx = 0.5;
         contentGbc.gridx = 2;
-        contentGbc.insets = new Insets(20, 35, 20, 35); //Total panel (iya spacing)
+        contentGbc.insets = new Insets(20, 35, 20, 35);
         contentPanel.add(rightPanel, contentGbc);
 
         JPanel separator2 = new JPanel();
@@ -145,7 +144,7 @@ public class DashboardInterface extends JFrame {
         separator2.setBackground(Color.decode("#FFFFFF"));
 
         // Bottom Panel
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 23));
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 150, 23)); //this line controls the position and gap of each button
         bottomPanel.setPreferredSize(new Dimension(1, 96));
         bottomPanel.setBackground(Color.decode("#141414"));
 
@@ -168,30 +167,29 @@ public class DashboardInterface extends JFrame {
         bottomPanel.add(recordSellButton);
         bottomPanel.add(adminButton);
 
-        // Add all panels to main panel with proper weights
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.HORIZONTAL; //controls the top panels' position
         gbc.weightx = 1.0;
         gbc.weighty = 0;
         gbc.gridx = 0;
         gbc.gridy = 0;
         mainPanel.add(topPanel, gbc);
 
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.HORIZONTAL; // controls the position separator 1 (top line)
         gbc.weighty = 0;
         gbc.gridy = 1;
         mainPanel.add(separator1, gbc);
 
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.BOTH; //controls the content panel
         gbc.weighty = 1.0;
         gbc.gridy = 2;
         mainPanel.add(contentPanel, gbc);
 
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.HORIZONTAL; // controls the position of separator 2 (bottom line)
         gbc.weighty = 0;
         gbc.gridy = 3;
         mainPanel.add(separator2, gbc);
 
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.HORIZONTAL; // controls the bottom panels' position
         gbc.weighty = 0;
         gbc.gridy = 4;
         mainPanel.add(bottomPanel, gbc);
