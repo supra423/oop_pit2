@@ -18,14 +18,6 @@ public class LandingPage extends JFrame {
         } catch (Exception e) {
             System.out.println("Background image not found: " + e.getMessage());
         }
-
-        startButton.addActionListener(e -> {
-            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(startButton);
-            if (currentFrame != null) {
-                currentFrame.dispose();
-            }
-            SwingUtilities.invokeLater(DashboardInterface::new);
-        });
     }
 
     public LandingPage() {
@@ -52,6 +44,7 @@ public class LandingPage extends JFrame {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
+        startButton.addActionListener(e -> openDashboard());
         buttonPanel.add(startButton);
 
         mainPanel.add(buttonPanel);

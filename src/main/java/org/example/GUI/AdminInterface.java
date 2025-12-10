@@ -1,6 +1,7 @@
 package org.example.GUI;
 
 import org.example.*;
+import org.example.Controller.AdminController;
 import org.example.TransactionDAO.*;
 import org.example.MaterialDAO.*;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class AdminInterface extends JFrame {
-    private static JTextArea outputArea = new JTextArea();
+    private static final JTextArea outputArea = new JTextArea();
     private static final JButton[] operationButtons = {
             LandingPage.createStyledButton("Add material", 12),
             LandingPage.createStyledButton("Delete material", 12),
@@ -34,249 +35,24 @@ public class AdminInterface extends JFrame {
     static {
         Image resizedImage = rawLogo.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         logo = new ImageIcon(resizedImage);
-        operationButtons[0].addActionListener(e -> { // add material
-            String materialName;
-            String unitOfMeasure;
-            Double materialPrice;
-            Integer stockQuantity;
-            while (true) {
 
-                materialName = JOptionPane.showInputDialog("Input material name");
-                if (materialName == null) {
-                    return;
-                } else if (materialName.isBlank()) {
-                    JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                    continue;
-                }
-                unitOfMeasure = JOptionPane.showInputDialog("Input unit of measure");
-                if (unitOfMeasure == null) {
-                    return;
-                }
-                else if (unitOfMeasure.isBlank()) {
-                    JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                    continue;
-                }
-                if (unitOfMeasure.length() > 5) {
-                    JOptionPane.showMessageDialog(null, "Max 5 characters!");
-                    continue;
-                }
-                try {
-                    String stringMaterialPrice = JOptionPane.showInputDialog("Input price (per " + unitOfMeasure + ")");
-                    if (stringMaterialPrice == null) {
-                        return;
-                    } else if (stringMaterialPrice.isBlank()) {
-                        JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                        continue;
-                    }
-                    String stringStockQuantity = JOptionPane.showInputDialog("Input initial stock quantity (per " + unitOfMeasure + ")");
-                    if (stringStockQuantity == null) {
-                        return;
-                    } else if (stringStockQuantity.isBlank()) {
-                        JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                        continue;
-                    }
-                    materialPrice = Double.parseDouble(stringMaterialPrice);
-                    stockQuantity = Integer.parseInt(stringStockQuantity);
-                    break;
-                } catch (NumberFormatException e2) {
-                    JOptionPane.showMessageDialog(null, "Please only input numbers!");
-                }
-            }
-            Material newMaterial = new Material(materialName, unitOfMeasure, materialPrice, stockQuantity);
-            outputArea.setText("Addition successful!");
-            MaterialDAO.addMaterial(newMaterial);
-        });
-        operationButtons[1].addActionListener(e -> { // delete material
-            // 0 so that if ever an unhandled error occurs, nothing gets deleted
-            // because IDs start at 1
-            int materialId = 0;
-
-            while (true) {
-                try {
-                     String stringMaterialId = JOptionPane.showInputDialog("Enter material ID to delete");
-                     if (stringMaterialId == null) {
-                         return;
-                     } else if (stringMaterialId.isBlank()) {
-                         JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                         continue;
-                     }
-                     materialId = Integer.parseInt(stringMaterialId);
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "Please only input numbers!");
-                }
-                if (MaterialDAO.getMaterial(materialId) == null) {
-                    outputArea.setText("Material not found");
-                    break;
-                }
-                MaterialDAO.removeMaterial(materialId);
-                outputArea.setText("Deletion successful!");
-                break;
-            }
-        });
-        operationButtons[2].addActionListener(e -> { // get all materials
-            outputArea.setText("");
-            for (Material material : MaterialDAO.getAllMaterials()) {
-                outputArea.append(material.toString() + "\n\n");
-            }
-        });
-        operationButtons[3].addActionListener(e -> { // get material by id
-            int materialId = 0;
-
-            while (true) {
-                try {
-                    String stringMaterialId = JOptionPane.showInputDialog("Enter material ID to search");
-                    if (stringMaterialId == null) {
-                        return;
-                    } else if (stringMaterialId.isBlank()) {
-                        JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                        continue;
-                    }
-                    materialId = Integer.parseInt(stringMaterialId);
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "Please only input numbers!");
-                }
-                Material fetchedMaterial = MaterialDAO.getMaterial(materialId);
-                if (fetchedMaterial == null) {
-                    outputArea.setText("Material not found");
-                    break;
-                }
-                outputArea.setText(fetchedMaterial.toString());
-                break;
-            }
-        });
-        operationButtons[4].addActionListener(e -> { // get transaction by id
-            int transactionId = 0;
-
-            while (true) {
-                try {
-                    String stringTransactionId = JOptionPane.showInputDialog("Enter transaction ID to search");
-                    if (stringTransactionId == null) {
-                        return;
-                    } else if (stringTransactionId.isBlank()) {
-                        JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                        continue;
-                    }
-                    transactionId = Integer.parseInt(stringTransactionId);
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "Please only input numbers!");
-                }
-                Transaction fetchedTransaction = TransactionDAO.getTransaction(transactionId);
-                if (fetchedTransaction == null) {
-                    outputArea.setText("Transaction not found");
-                    break;
-                }
-                outputArea.setText(fetchedTransaction.toString());
-                break;
-            }
-        });
-        operationButtons[5].addActionListener(e -> { // get all transactions
-            outputArea.setText("");
-            for (Transaction transaction : TransactionDAO.getAllTransactions()) {
-                outputArea.append(transaction.toString() + "\n\n");
-            }
-        });
-        operationButtons[6].addActionListener(e -> { // get transaction item by id
-            int transactionItemId = 0;
-
-            while (true) {
-                try {
-                    String stringTransactionItemId = JOptionPane.showInputDialog("Enter transaction item ID to search");
-                    if (stringTransactionItemId == null) {
-                        return;
-                    } else if (stringTransactionItemId.isBlank()) {
-                        JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                        continue;
-                    }
-                    transactionItemId = Integer.parseInt(stringTransactionItemId);
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "Please only input numbers!");
-                }
-                TransactionItem fetchedTransactionItem = TransactionDAO.getTransactionItem(transactionItemId);
-                if (fetchedTransactionItem == null) {
-                    outputArea.setText("Transaction not found");
-                    break;
-                }
-                outputArea.setText(fetchedTransactionItem.toString());
-                break;
-            }
-        });
-        operationButtons[7].addActionListener(e -> { // get all transaction items
-            outputArea.setText("");
-            for (TransactionItem transactionItem : TransactionDAO.getAllTransactionItems()) {
-                outputArea.append(transactionItem.toString() + "\n\n");
-            }
-        });
-        operationButtons[8].addActionListener(e -> { // get transaction items by transaction id
-            int transactionId = 0;
-            List<TransactionItem> fetchedTransactionItems;
-            outputArea.setText("");
-            while (true) {
-                try {
-                    String stringTransactionId = JOptionPane.showInputDialog("Enter transaction ID");
-                    if (stringTransactionId == null) {
-                        return;
-                    } else if (stringTransactionId.isBlank()) {
-                        JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                        continue;
-                    }
-                    transactionId = Integer.parseInt(stringTransactionId);
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "Please only input numbers!");
-                }
-                fetchedTransactionItems = TransactionDAO.getTransactionItemsByTransactionId(transactionId);
-                if (fetchedTransactionItems == null) {
-                    outputArea.setText("Transaction not found");
-                    return;
-                }
-                outputArea.setText(fetchedTransactionItems.toString());
-                break;
-            }
-            outputArea.setText("");
-            for (TransactionItem transactionItem : fetchedTransactionItems) {
-                outputArea.append(transactionItem.toString() + "\n\n");
-            }
-        });
-        operationButtons[9].addActionListener(e -> { // delete transaction by transaction ID (including associated transaction items)
-            int transactionId = 0;
-
-            while (true) {
-                try {
-                    String stringTransactionId = JOptionPane.showInputDialog("Enter transaction ID to delete\n(THIS INCLUDES ASSOCIATED TRANSACTION ITEMS)");
-                    if (stringTransactionId == null) {
-                        return;
-                    } else if (stringTransactionId.isBlank()) {
-                        JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                        continue;
-                    }
-                    transactionId = Integer.parseInt(stringTransactionId);
-                } catch (NumberFormatException e1) {
-                    JOptionPane.showMessageDialog(null, "Please only input numbers!");
-                }
-                Transaction fetchedTransaction = TransactionDAO.getTransaction(transactionId);
-                if (fetchedTransaction == null) {
-                    outputArea.setText("Transaction not found");
-                    break;
-                }
-                TransactionDAO.deleteTransaction(transactionId);
-                outputArea.setText("Deletion successful!");
-                break;
-            }
-        });
-        operationButtons[10].addActionListener(e -> { // total money from buying
-            outputArea.setText("Total money from buy transactions: Php" + TransactionDAO.totalMoneyFromBuying());
-        });
-        operationButtons[11].addActionListener(e -> { // total money from selling
-
-            outputArea.setText("Total money from sell transactions: Php" + TransactionDAO.totalMoneyFromSelling());
-        });
-        operationButtons[12].addActionListener(e -> { // average money from buying
-
-            outputArea.setText("Average money from buy transactions: Php" + TransactionDAO.averageTotalFromBuying());
-        });
-        operationButtons[13].addActionListener(e -> { // average money from selling
-
-            outputArea.setText("Average money from sell transactions: Php" + TransactionDAO.averageTotalFromSelling());
-        });
+        // pass by reference kunohay, charrrr HAHAHAAHAHAHAHAH
+        // because outputArea is an object, I can just pass around its reference
+        // so that it can be modified directly from other classes, particularly the controller
+        operationButtons[0].addActionListener(e -> AdminController.addMaterial(outputArea));
+        operationButtons[1].addActionListener(e -> AdminController.deleteMaterial(outputArea));
+        operationButtons[2].addActionListener(e -> AdminController.getAllMaterials(outputArea));
+        operationButtons[3].addActionListener(e -> AdminController.getMaterialById(outputArea));
+        operationButtons[4].addActionListener(e -> AdminController.getTransactionById(outputArea));
+        operationButtons[5].addActionListener(e -> AdminController.getAllTransactions(outputArea));
+        operationButtons[6].addActionListener(e -> AdminController.getTransactionItemById(outputArea));
+        operationButtons[7].addActionListener(e -> AdminController.getAllTransactionItems(outputArea));
+        operationButtons[8].addActionListener(e -> AdminController.getTransactionItemsByTransactionId(outputArea));
+        operationButtons[9].addActionListener(e -> AdminController.deleteTransaction(outputArea)); // warning: this also deletes associated transaction items
+        operationButtons[10].addActionListener(e -> AdminController.totalMoneyFromBuying(outputArea));
+        operationButtons[11].addActionListener(e -> AdminController.totalMoneyFromSelling(outputArea));
+        operationButtons[12].addActionListener(e -> AdminController.averageMoneyFromBuying(outputArea));
+        operationButtons[13].addActionListener(e -> AdminController.averageMoneyFromSelling(outputArea));
     }
     public AdminInterface() {
         setTitle("The Garage");
