@@ -25,6 +25,7 @@ public class DashboardInterface extends JFrame {
     public DashboardInterface() {
         setTitle("The Garage - Dashboard");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -144,19 +145,25 @@ public class DashboardInterface extends JFrame {
         separator2.setBackground(Color.decode("#FFFFFF"));
 
         // Bottom Panel
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 150, 23));
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 23));
         bottomPanel.setPreferredSize(new Dimension(1, 96));
         bottomPanel.setBackground(Color.decode("#141414"));
 
         JButton recordBuyButton = LandingPage.createStyledButton("RECORD A BUY", 18);
-        recordBuyButton.setPreferredSize(new Dimension(350, 55));
+        recordBuyButton.setPreferredSize(new Dimension(250, 55));
 
         JButton recordSellButton = LandingPage.createStyledButton("RECORD A SELL", 18);
-        recordSellButton.setPreferredSize(new Dimension(350, 55));
+        recordSellButton.setPreferredSize(new Dimension(250, 55));
 
         JButton adminButton = LandingPage.createStyledButton("ADMIN", 18);
-        adminButton.setPreferredSize(new Dimension(350, 55));
+        adminButton.setPreferredSize(new Dimension(250, 55));
+        adminButton.addActionListener(e-> openAdminInterface());
 
+        JButton backButton = LandingPage.createStyledButton("BACK", 18);
+        backButton.setPreferredSize(new Dimension(250, 55));
+        backButton.addActionListener(e-> openLandingPage());
+
+        bottomPanel.add(backButton);
         bottomPanel.add(recordBuyButton);
         bottomPanel.add(recordSellButton);
         bottomPanel.add(adminButton);
@@ -191,9 +198,17 @@ public class DashboardInterface extends JFrame {
 
         add(mainPanel, BorderLayout.CENTER);
 
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
-
+        pack();
     }
 
+    private void openAdminInterface() {
+        this.dispose();
+        SwingUtilities.invokeLater(AdminInterface::new);
+    }
+
+    private void openLandingPage() {
+        this.dispose();
+        SwingUtilities.invokeLater(LandingPage::new);
+    }
 }
