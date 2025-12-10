@@ -1,6 +1,7 @@
 package org.example.Controller;
 
-import org.example.*;
+import org.example.Model.*;
+import org.example.View.DashboardInterface;
 
 import javax.swing.*;
 import java.util.List;
@@ -10,7 +11,8 @@ public class AdminController {
     public static void addMaterial(JTextArea outputArea) {
         String materialName;
         String unitOfMeasure;
-        Double materialPrice;
+        Double materialBuyPrice;
+        Double materialSellPrice;
         Integer stockQuantity;
         while (true) {
 
@@ -34,10 +36,17 @@ public class AdminController {
                 continue;
             }
             try {
-                String stringMaterialPrice = JOptionPane.showInputDialog("Input price (per " + unitOfMeasure + ")");
-                if (stringMaterialPrice == null) {
+                String stringMaterialBuyPrice = JOptionPane.showInputDialog("Input buy price (per " + unitOfMeasure + ")");
+                if (stringMaterialBuyPrice == null) {
                     return;
-                } else if (stringMaterialPrice.isBlank()) {
+                } else if (stringMaterialBuyPrice.isBlank()) {
+                    JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
+                    continue;
+                }
+                String stringMaterialSellPrice = JOptionPane.showInputDialog("Input sell price (per " + unitOfMeasure + ")");
+                if (stringMaterialBuyPrice == null) {
+                    return;
+                } else if (stringMaterialBuyPrice.isBlank()) {
                     JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
                     continue;
                 }
@@ -48,14 +57,15 @@ public class AdminController {
                     JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
                     continue;
                 }
-                materialPrice = Double.parseDouble(stringMaterialPrice);
+                materialBuyPrice = Double.parseDouble(stringMaterialBuyPrice);
+                materialSellPrice = Double.parseDouble(stringMaterialSellPrice);
                 stockQuantity = Integer.parseInt(stringStockQuantity);
                 break;
             } catch (NumberFormatException e2) {
                 JOptionPane.showMessageDialog(null, "Please only input numbers!");
             }
         }
-        Material newMaterial = new Material(materialName, unitOfMeasure, materialPrice, stockQuantity);
+        Material newMaterial = new Material(materialName, unitOfMeasure, materialBuyPrice, materialSellPrice, stockQuantity);
         outputArea.setText("Addition successful!");
         MaterialDAO.addMaterial(newMaterial);
     }
@@ -242,6 +252,12 @@ public class AdminController {
             outputArea.setText("Deletion successful!");
             break;
         }
+    }
+
+    public static void openDashboardInterface(JFrame adminFrame, JButton button) {
+        button.setEnabled(false);
+        adminFrame.dispose();
+        SwingUtilities.invokeLater(DashboardInterface::new);
     }
 
     public static void totalMoneyFromBuying(JTextArea outputArea) { outputArea.setText("Total money from buy transactions: Php" + TransactionDAO.totalMoneyFromBuying()); }

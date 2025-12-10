@@ -1,9 +1,11 @@
 package org.example;
 
-import org.example.GUI.LandingPage;
+import org.example.View.LandingPage;
+
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        new LandingPage();
+        SwingUtilities.invokeLater(LandingPage::new);
     }
 }

@@ -1,18 +1,16 @@
-package org.example.GUI;
+package org.example.View;
 
-import org.example.*;
-import org.example.MaterialDAO.*;
+import org.example.Controller.DashboardController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Objects;
 
 public class DashboardInterface extends JFrame {
     private static JTextArea totalArea = new JTextArea();
     private static JTable materialsTable;
-    private static DefaultTableModel tableModel;
+
     static ImageIcon logo;
     static ImageIcon rawLogo = new ImageIcon(
             Objects.requireNonNull(DashboardInterface.class.getResource("/Logo.png")));
@@ -77,14 +75,7 @@ public class DashboardInterface extends JFrame {
         materialsLabel.setBorder(new EmptyBorder(10, 15, 10, 15));
 
         // Table for materials
-        String[] columnNames = {"Material Name", "Price", "Quantity"};
-        tableModel = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        materialsTable = new JTable(tableModel);
+        materialsTable = new JTable(DashboardController.getAllMaterials());
         materialsTable.setFont(new Font("SansSerif", Font.PLAIN, 14));
         materialsTable.setRowHeight(25);
         materialsTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
@@ -149,19 +140,19 @@ public class DashboardInterface extends JFrame {
         bottomPanel.setPreferredSize(new Dimension(1, 96));
         bottomPanel.setBackground(Color.decode("#141414"));
 
-        JButton recordBuyButton = LandingPage.createStyledButton("RECORD A BUY", 18);
+        JButton recordBuyButton = StyledButtonCreator.createStyledButton("RECORD A BUY", 18);
         recordBuyButton.setPreferredSize(new Dimension(250, 55));
 
-        JButton recordSellButton = LandingPage.createStyledButton("RECORD A SELL", 18);
+        JButton recordSellButton = StyledButtonCreator.createStyledButton("RECORD A SELL", 18);
         recordSellButton.setPreferredSize(new Dimension(250, 55));
 
-        JButton adminButton = LandingPage.createStyledButton("ADMIN", 18);
+        JButton adminButton = StyledButtonCreator.createStyledButton("ADMIN", 18);
+        JButton backButton = StyledButtonCreator.createStyledButton("BACK", 18);
         adminButton.setPreferredSize(new Dimension(250, 55));
-        adminButton.addActionListener(e-> openAdminInterface());
+        adminButton.addActionListener(e-> DashboardController.openAdminInterface(this, adminButton));
 
-        JButton backButton = LandingPage.createStyledButton("BACK", 18);
         backButton.setPreferredSize(new Dimension(250, 55));
-        backButton.addActionListener(e-> openLandingPage());
+        backButton.addActionListener(e-> DashboardController.openLandingPage(this, backButton));
 
         bottomPanel.add(backButton);
         bottomPanel.add(recordBuyButton);
@@ -200,15 +191,5 @@ public class DashboardInterface extends JFrame {
 
         setVisible(true);
         pack();
-    }
-
-    private void openAdminInterface() {
-        this.dispose();
-        SwingUtilities.invokeLater(AdminInterface::new);
-    }
-
-    private void openLandingPage() {
-        this.dispose();
-        SwingUtilities.invokeLater(LandingPage::new);
     }
 }

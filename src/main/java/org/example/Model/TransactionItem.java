@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Model;
 
 public class TransactionItem {
     private int transactionItemId;
@@ -20,7 +20,14 @@ public class TransactionItem {
 
     public void calculateSubtotal() {
         // material price needs to be queried
-        double materialPrice = MaterialDAO.getMaterial(this.materialId).price();
+        double materialPrice = 0;
+        if (TransactionDAO.getTransaction(this.transactionId).getTransactionType().strip().equalsIgnoreCase("buy")) {
+            materialPrice = MaterialDAO.getMaterial(this.materialId).buyPrice();
+        } else if (TransactionDAO.getTransaction(this.transactionId).getTransactionType().strip().equalsIgnoreCase("sell")) {
+            materialPrice = MaterialDAO.getMaterial(this.materialId).sellPrice();
+        } else {
+            System.out.println("There was a problem with finding the price!");
+        }
         this.subTotal = this.quantity * materialPrice;
     }
 

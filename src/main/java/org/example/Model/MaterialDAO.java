@@ -1,8 +1,7 @@
-package org.example;
+package org.example.Model;
 
 import java.sql.*;
 import java.util.*;
-import java.util.logging.Logger;
 
 public class MaterialDAO {
     static Connection conn = Database.getConn();
@@ -20,7 +19,8 @@ public class MaterialDAO {
                         rslt1.getInt("materialId"),
                         rslt1.getString("materialName"),
                         rslt1.getString("unitOfMeasure"),
-                        rslt1.getDouble("price"),
+                        rslt1.getDouble("buyPrice"),
+                        rslt1.getDouble("sellPrice"),
                         rslt1.getInt("stockQuantity")
                 );
             }
@@ -40,7 +40,8 @@ public class MaterialDAO {
                         rslt1.getInt("materialId"),
                         rslt1.getString("materialName"),
                         rslt1.getString("unitOfMeasure"),
-                        rslt1.getDouble("price"),
+                        rslt1.getDouble("buyPrice"),
+                        rslt1.getDouble("sellPrice"),
                         rslt1.getInt("stockQuantity")
                 ));
             }
@@ -55,7 +56,8 @@ public class MaterialDAO {
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
             stmt1.setString(1, material.name());
             stmt1.setString(2, material.unitOfMeasure());
-            stmt1.setDouble(3, material.price());
+            stmt1.setDouble(3, material.buyPrice());
+            stmt1.setDouble(3, material.sellPrice());
             stmt1.setInt(4, material.stockQuantity());
             stmt1.executeUpdate();
         } catch (SQLException e) {

@@ -1,33 +1,30 @@
-package org.example.GUI;
+package org.example.View;
 
-import org.example.*;
 import org.example.Controller.AdminController;
-import org.example.TransactionDAO.*;
-import org.example.MaterialDAO.*;
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.List;
 import java.util.Objects;
 
 public class AdminInterface extends JFrame {
     private static final JTextArea outputArea = new JTextArea();
     private static final JButton[] operationButtons = {
-            LandingPage.createStyledButton("Add material", 12),
-            LandingPage.createStyledButton("Delete material", 12),
-            LandingPage.createStyledButton("Get all materials", 12),
-            LandingPage.createStyledButton("Get material by ID", 12),
-            LandingPage.createStyledButton("Get transaction by ID", 12),
-            LandingPage.createStyledButton("Get all transactions", 12),
-            LandingPage.createStyledButton("Get transaction item by ID", 12),
-            LandingPage.createStyledButton("Get all transaction items", 12),
-            LandingPage.createStyledButton("Get transaction items by transaction ID", 12),
-            LandingPage.createStyledButton("<html>Delete transaction<br>(Includes associated transaction items)</html>", 12),
-            LandingPage.createStyledButton("Total money from buying", 12),
-            LandingPage.createStyledButton("Total money from selling", 12),
-            LandingPage.createStyledButton("Average money from buying", 12),
-            LandingPage.createStyledButton("Average money from selling", 12),
+            StyledButtonCreator.createStyledButton("Add material", 12),
+            StyledButtonCreator.createStyledButton("Delete material", 12),
+            StyledButtonCreator.createStyledButton("Get all materials", 12),
+            StyledButtonCreator.createStyledButton("Get material by ID", 12),
+            StyledButtonCreator.createStyledButton("Get transaction by ID", 12),
+            StyledButtonCreator.createStyledButton("Get all transactions", 12),
+            StyledButtonCreator.createStyledButton("Get transaction item by ID", 12),
+            StyledButtonCreator.createStyledButton("Get all transaction items", 12),
+            StyledButtonCreator.createStyledButton("Get transaction items by transaction ID", 12),
+            StyledButtonCreator.createStyledButton("<html>Delete transaction<br>(Includes associated transaction items)</html>", 12),
+            StyledButtonCreator.createStyledButton("Total money from buying", 12),
+            StyledButtonCreator.createStyledButton("Total money from selling", 12),
+            StyledButtonCreator.createStyledButton("Average money from buying", 12),
+            StyledButtonCreator.createStyledButton("Average money from selling", 12),
     };
     static ImageIcon logo;
     static ImageIcon rawLogo = new ImageIcon(
@@ -110,9 +107,9 @@ public class AdminInterface extends JFrame {
         JPanel backButtonPanel = new JPanel();
         backButtonPanel.setBackground(Color.decode("#141414"));
         backButtonPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
-        JButton backButton = LandingPage.createStyledButton("BACK", 24);
+        JButton backButton = StyledButtonCreator.createStyledButton("BACK", 24);
         backButton.setPreferredSize(new Dimension(150, 50));
-        backButton.addActionListener(e->openDashboardInterface());
+        backButton.addActionListener(e-> AdminController.openDashboardInterface(this, backButton));
 
         JScrollPane scrollOutput = new JScrollPane(outputArea);
         scrollOutput.setPreferredSize(new Dimension(879, 650));
@@ -183,9 +180,5 @@ public class AdminInterface extends JFrame {
         backButtonPanel.add(backButton);
         bottomPanel.add(backButtonPanel, BorderLayout.WEST);
         pack();
-    }
-    private void openDashboardInterface() {
-        this.dispose();
-        SwingUtilities.invokeLater(DashboardInterface::new);
     }
 }
