@@ -336,6 +336,7 @@ public class AdminInterface extends JFrame {
         backButtonPanel.setBorder(new EmptyBorder(0, 10, 0, 0));
         JButton backButton = LandingPage.createStyledButton("BACK", 24);
         backButton.setPreferredSize(new Dimension(150, 50));
+        backButton.addActionListener(e->openDashboardInterface());
 
         JScrollPane scrollOutput = new JScrollPane(outputArea);
         scrollOutput.setPreferredSize(new Dimension(879, 650));
@@ -406,5 +407,9 @@ public class AdminInterface extends JFrame {
         backButtonPanel.add(backButton);
         bottomPanel.add(backButtonPanel, BorderLayout.WEST);
         pack();
+    }
+    private void openDashboardInterface() {
+        this.dispose();
+        SwingUtilities.invokeLater(DashboardInterface::new);
     }
 }
