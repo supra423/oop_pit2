@@ -30,7 +30,7 @@ public class LandingPage extends JFrame {
 
     public LandingPage() {
         setTitle("The Garage");
-        setSize(1920, 1080);
+        setSize(1288, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -109,5 +109,9 @@ public class LandingPage extends JFrame {
         });
 
         return button;
+    }
+    private void openDashboard() {
+        this.dispose();
+        SwingUtilities.invokeLater(DashboardInterface::new);
     }
 }
