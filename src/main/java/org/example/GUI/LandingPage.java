@@ -4,8 +4,29 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 public class LandingPage extends JFrame {
+    private static final JButton startButton = createStyledButton("START", 24);
+    private static Image backgroundImage;
+
+    static {
+        try {
+            backgroundImage = new ImageIcon(
+                    Objects.requireNonNull(LandingPage.class.getResource("/landingpage.png"))
+            ).getImage();
+        } catch (Exception e) {
+            System.out.println("Background image not found: " + e.getMessage());
+        }
+
+        startButton.addActionListener(e -> {
+            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(startButton);
+            if (currentFrame != null) {
+                currentFrame.dispose();
+            }
+            SwingUtilities.invokeLater(DashboardInterface::new);
+        });
+    }
 
     public LandingPage() {
         setTitle("The Garage");
@@ -15,14 +36,6 @@ public class LandingPage extends JFrame {
         setResizable(false);
 
         JPanel mainPanel = new JPanel() {
-            private Image backgroundImage;
-            {
-                try {
-                    backgroundImage = new ImageIcon(getClass().getResource("/landingpage.png")).getImage();
-                } catch (Exception e) {
-                    System.out.println("Background image not found: " + e.getMessage());
-                }
-            }
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -35,11 +48,7 @@ public class LandingPage extends JFrame {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, -300, 0));
 
-        // Add spacing to push button to bottom
         mainPanel.add(Box.createVerticalGlue());
-
-        JButton startButton = createStyledButton("START", 24);
-        startButton.addActionListener(e -> openDashboard());
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
@@ -73,11 +82,10 @@ public class LandingPage extends JFrame {
         button.setBackground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setContentAreaFilled(false); // Don't paint default background
+        button.setContentAreaFilled(false);
         button.setOpaque(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Hover effects
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -101,12 +109,5 @@ public class LandingPage extends JFrame {
         });
 
         return button;
-    }
-
-    private void openDashboard() {
-        this.dispose();
-        SwingUtilities.invokeLater(() -> {
-            new DashboardInterface();
-        });
     }
 }
