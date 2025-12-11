@@ -51,14 +51,14 @@ public class MaterialDAO {
         }
     }
     public static void addMaterial(Material material) {
-        String sql = "INSERT INTO Material (materialName, unitOfMeasure, price, stockQuantity)" +
-                "VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Material (materialName, unitOfMeasure, buyPrice, sellPrice, stockQuantity)" +
+                "VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
             stmt1.setString(1, material.name());
             stmt1.setString(2, material.unitOfMeasure());
             stmt1.setDouble(3, material.buyPrice());
-            stmt1.setDouble(3, material.sellPrice());
-            stmt1.setInt(4, material.stockQuantity());
+            stmt1.setDouble(4, material.sellPrice());
+            stmt1.setInt(5, material.stockQuantity());
             stmt1.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

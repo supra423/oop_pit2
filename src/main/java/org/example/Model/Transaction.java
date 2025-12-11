@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Transaction {
     private int transactionId;
-    private List<TransactionItem> transactionItems = new ArrayList<>();
+    private List<TransactionItem> transactionItems;
     private String date;
     private double totalAmount;
     private String transactionType;
@@ -26,6 +26,10 @@ public class Transaction {
                        double totalAmount,
                        String transactionType) {
         this(0, transactionItems, date, totalAmount, transactionType);
+    }
+
+    public Transaction(String date) {
+        this(0, new ArrayList<>(), date, 0, "");
     }
 
     public Transaction(int transactionId, String date, double totalAmount, String transactionType) {

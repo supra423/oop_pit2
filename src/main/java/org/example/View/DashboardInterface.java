@@ -1,6 +1,8 @@
 package org.example.View;
 
 import org.example.Controller.DashboardController;
+import org.example.Model.Transaction;
+import java.time.LocalDate;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -8,8 +10,10 @@ import java.awt.*;
 import java.util.Objects;
 
 public class DashboardInterface extends JFrame {
-    private static JTextArea totalArea = new JTextArea();
+    private static JTextArea itemsArea = new JTextArea();
     private static JTable materialsTable;
+    private static Transaction currTransaction = new Transaction(LocalDate.now().toString());
+    private static StringBuilder itemsAreaString = new StringBuilder();
 
     static ImageIcon logo;
     static ImageIcon rawLogo = new ImageIcon(
@@ -21,6 +25,9 @@ public class DashboardInterface extends JFrame {
     }
 
     public DashboardInterface() {
+        itemsArea.setText("");
+        itemsAreaString.setLength(0);
+        currTransaction.getTransactionItems().clear();
         setTitle("The Garage - Dashboard");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -79,6 +86,7 @@ public class DashboardInterface extends JFrame {
         materialsTable.setFont(new Font("SansSerif", Font.PLAIN, 14));
         materialsTable.setRowHeight(25);
         materialsTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+        DashboardController.materialsTableRowListener(materialsTable, currTransaction, itemsArea, itemsAreaString);
 
         JScrollPane tableScrollPane = new JScrollPane(materialsTable);
 
@@ -94,19 +102,19 @@ public class DashboardInterface extends JFrame {
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setBackground(Color.decode("#141414"));
 
-        JLabel totalLabel = new JLabel("ITEMS");
-        totalLabel.setFont(new Font("Sanserif", Font.BOLD, 20));
-        totalLabel.setForeground(Color.decode("#FFFFFF"));
-        totalLabel.setBackground(Color.decode("#3C3C3C"));
-        totalLabel.setOpaque(true);
-        totalLabel.setBorder(new EmptyBorder(20, 15, 20, 15));
+        JLabel itemsLabel = new JLabel("ITEMS");
+        itemsLabel.setFont(new Font("Sanserif", Font.BOLD, 20));
+        itemsLabel.setForeground(Color.decode("#FFFFFF"));
+        itemsLabel.setBackground(Color.decode("#3C3C3C"));
+        itemsLabel.setOpaque(true);
+        itemsLabel.setBorder(new EmptyBorder(20, 15, 20, 15));
 
-        totalArea.setEditable(false);
-        totalArea.setFont(new Font("Monospace", Font.BOLD, 36));
-        totalArea.setBackground(Color.decode("#D9D9D9"));
-        JScrollPane totalScrollPane = new JScrollPane(totalArea);
+        itemsArea.setEditable(false);
+        itemsArea.setFont(new Font("Monospace", Font.PLAIN, 12));
+        itemsArea.setBackground(Color.decode("#D9D9D9"));
+        JScrollPane totalScrollPane = new JScrollPane(itemsArea);
 
-        rightPanel.add(totalLabel, BorderLayout.NORTH);
+        rightPanel.add(itemsLabel, BorderLayout.NORTH);
         rightPanel.add(totalScrollPane, BorderLayout.CENTER);
 
         GridBagConstraints contentGbc = new GridBagConstraints(); //controls the Material panels' position
@@ -135,7 +143,7 @@ public class DashboardInterface extends JFrame {
         separator2.setBackground(Color.decode("#FFFFFF"));
 
         // Bottom Panel
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 150, 23)); //this line controls the position and gap of each button
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 23)); //this line controls the position and gap of each button
         bottomPanel.setPreferredSize(new Dimension(1, 96));
         bottomPanel.setBackground(Color.decode("#141414"));
 

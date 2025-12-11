@@ -18,6 +18,10 @@ public class TransactionItem {
         this.subTotal = subTotal;
     }
 
+    public TransactionItem(int materialId, int quantity) {
+        this(0, 0, materialId, quantity, 0);
+    }
+
     public void calculateSubtotal() {
         // material price needs to be queried
         double materialPrice = 0;
