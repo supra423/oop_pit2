@@ -102,6 +102,9 @@ public class DashboardInterface extends JFrame {
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setBackground(Color.decode("#141414"));
 
+        JPanel itemsLabelAndClearButtonPanel = new JPanel();
+        itemsLabelAndClearButtonPanel.setBackground(Color.decode("#3C3C3C"));
+
         JLabel itemsLabel = new JLabel("ITEMS");
         itemsLabel.setFont(new Font("Sanserif", Font.BOLD, 20));
         itemsLabel.setForeground(Color.decode("#FFFFFF"));
@@ -109,12 +112,17 @@ public class DashboardInterface extends JFrame {
         itemsLabel.setOpaque(true);
         itemsLabel.setBorder(new EmptyBorder(20, 15, 20, 15));
 
+        JButton clearButton = StyledButtonCreator.createStyledButton("CLEAR TEXT", 16);
+        clearButton.addActionListener(e -> DashboardController.clearButton(currTransaction, itemsArea, itemsAreaString));
+
         itemsArea.setEditable(false);
         itemsArea.setFont(new Font("Monospace", Font.PLAIN, 12));
         itemsArea.setBackground(Color.decode("#D9D9D9"));
         JScrollPane totalScrollPane = new JScrollPane(itemsArea);
 
-        rightPanel.add(itemsLabel, BorderLayout.NORTH);
+        itemsLabelAndClearButtonPanel.add(itemsLabel);
+        itemsLabelAndClearButtonPanel.add(clearButton);
+        rightPanel.add(itemsLabelAndClearButtonPanel, BorderLayout.NORTH);
         rightPanel.add(totalScrollPane, BorderLayout.CENTER);
 
         GridBagConstraints contentGbc = new GridBagConstraints(); //controls the Material panels' position
@@ -149,9 +157,11 @@ public class DashboardInterface extends JFrame {
 
         JButton recordBuyButton = StyledButtonCreator.createStyledButton("RECORD A BUY", 18);
         recordBuyButton.setPreferredSize(new Dimension(250, 55));
+        recordBuyButton.addActionListener(e -> DashboardController.recordBuyButton(currTransaction, itemsArea, itemsAreaString, materialsTable));
 
         JButton recordSellButton = StyledButtonCreator.createStyledButton("RECORD A SELL", 18);
         recordSellButton.setPreferredSize(new Dimension(250, 55));
+        recordSellButton.addActionListener(e -> DashboardController.recordSellButton(currTransaction, itemsArea, itemsAreaString, materialsTable));
 
         JButton adminButton = StyledButtonCreator.createStyledButton("ADMIN", 18);
         JButton backButton = StyledButtonCreator.createStyledButton("BACK", 18);

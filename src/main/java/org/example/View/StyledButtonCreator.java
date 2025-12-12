@@ -6,7 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class StyledButtonCreator {
-    public static JButton createStyledButton(String text, int size) {
+    public static JButton createStyledButton(String text, int fontSize) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -22,7 +22,7 @@ public class StyledButtonCreator {
         };
 
         button.setPreferredSize(new Dimension(200, 60));
-        button.setFont(new Font("Montserrat", Font.BOLD, size));
+        button.setFont(new Font("Montserrat", Font.BOLD, fontSize));
         button.setForeground(new Color(26, 26, 26));
         button.setBackground(Color.WHITE);
         button.setFocusPainted(false);
