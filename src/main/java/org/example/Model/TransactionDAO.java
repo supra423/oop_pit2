@@ -1,5 +1,7 @@
 package org.example.Model;
 
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
+
 import java.sql.*;
 import java.util.*;
 
@@ -17,14 +19,17 @@ public class TransactionDAO {
         String sql = "SELECT * FROM Transaction_ WHERE transactionId = ?";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
             stmt1.setInt(1, transactionId);
-            ResultSet rslt1 = stmt1.executeQuery();
-            if (rslt1.next()) {
-                transaction = new Transaction(
-                        rslt1.getInt("transactionId"),
-                        rslt1.getString("transactionDate"),
-                        rslt1.getDouble("totalAmount"),
-                        rslt1.getString("transactionType")
-                );
+            try (ResultSet rslt1 = stmt1.executeQuery()) {
+                if (rslt1.next()) {
+                    transaction = new Transaction(
+                            rslt1.getInt("transactionId"),
+                            rslt1.getString("transactionDate"),
+                            rslt1.getDouble("totalAmount"),
+                            rslt1.getString("transactionType")
+                    );
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
             return transaction;
         } catch (SQLException e) {
@@ -56,7 +61,7 @@ public class TransactionDAO {
         String sql = "SELECT * FROM TransactionItem WHERE transactionItemId = ?";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
             stmt1.setInt(1, transactionItemId);
-            ResultSet rslt1 = stmt1.executeQuery();
+            try (ResultSet rslt1 = stmt1.executeQuery()) {
             if (rslt1.next()) {
                 transactionItem = new TransactionItem(
                         rslt1.getInt("transactionItemId"),
@@ -64,7 +69,10 @@ public class TransactionDAO {
                         rslt1.getInt("materialId"),
                         rslt1.getInt("quantity"),
                         rslt1.getDouble("subTotal")
-                );
+                    );
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
             return transactionItem;
         } catch (SQLException e) {
@@ -105,20 +113,35 @@ public class TransactionDAO {
         }
     }
 
+    public static int getIdOfMostRecentTransaction() {
+        String sql = "SELECT transactionId FROM Transaction_ ORDER BY transactionId DESC LIMIT 1";
+        int transactionId = 0;
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql);
+             ResultSet rslt1 = stmt1.executeQuery()) {
+            if (rslt1.next()) {
+                transactionId = rslt1.getInt("transactionId");
+            }
+            return transactionId;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static List<TransactionItem> getTransactionItemsByTransactionId(int transactionId) {
         List<TransactionItem> transactionItems = new ArrayList<>();
         String sql = "SELECT * FROM TransactionItem WHERE transactionId = ?";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
             stmt1.setInt(1, transactionId);
-            ResultSet rslt1 = stmt1.executeQuery();
-            while (rslt1.next()) {
-                transactionItems.add(new TransactionItem(
-                        rslt1.getInt("transactionItemId"),
-                        rslt1.getInt("transactionId"),
-                        rslt1.getInt("materialId"),
-                        rslt1.getInt("quantity"),
-                        rslt1.getDouble("subTotal")
-                ));
+            try (ResultSet rslt1 = stmt1.executeQuery()) {
+                while (rslt1.next()) {
+                    transactionItems.add(new TransactionItem(
+                            rslt1.getInt("transactionItemId"),
+                            rslt1.getInt("transactionId"),
+                            rslt1.getInt("materialId"),
+                            rslt1.getInt("quantity"),
+                            rslt1.getDouble("subTotal")
+                    ));
+                }
             }
             return transactionItems;
         } catch (SQLException e) {
@@ -198,6 +221,7 @@ public class TransactionDAO {
             throw new RuntimeException(e);
         }
     }
+
     public static double averageTotalFromSelling() {
         String sql = "SELECT AVG(totalAmount) as total FROM Transaction_ WHERE transactionType = 'sell'";
         double total = 0.0;
@@ -207,6 +231,17 @@ public class TransactionDAO {
                 total = rslt1.getDouble("total");
             }
             return total;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void updateTotalAmount(double totalAmount, int transactionId) {
+        String sql = "UPDATE Transaction_ SET totalAmount = ? WHERE transactionId = ?";
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
+            stmt1.setDouble(1, totalAmount);
+            stmt1.setInt(2, transactionId);
+            stmt1.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -33,7 +33,7 @@ public class Transaction {
     }
 
     public Transaction(int transactionId, String date, double totalAmount, String transactionType) {
-        this(transactionId, new ArrayList<>(), date, totalAmount, transactionType);
+        this(transactionId, null, date, totalAmount, transactionType);
     }
 
     public void calculateTotal() {
@@ -57,6 +57,10 @@ public class Transaction {
 
     public String getTransactionType() {
         return this.transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType.toLowerCase().strip();
     }
 
     @Override

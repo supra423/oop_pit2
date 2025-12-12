@@ -13,16 +13,19 @@ public class MaterialDAO {
         String sql = "SELECT * FROM Material WHERE materialId = ?";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
             stmt1.setInt(1, materialId);
-            ResultSet rslt1 = stmt1.executeQuery();
-            if (rslt1.next()) {
-                material = new Material(
-                        rslt1.getInt("materialId"),
-                        rslt1.getString("materialName"),
-                        rslt1.getString("unitOfMeasure"),
-                        rslt1.getDouble("buyPrice"),
-                        rslt1.getDouble("sellPrice"),
-                        rslt1.getInt("stockQuantity")
-                );
+            try (ResultSet rslt1 = stmt1.executeQuery()) {
+                if (rslt1.next()) {
+                    material = new Material(
+                            rslt1.getInt("materialId"),
+                            rslt1.getString("materialName"),
+                            rslt1.getString("unitOfMeasure"),
+                            rslt1.getDouble("buyPrice"),
+                            rslt1.getDouble("sellPrice"),
+                            rslt1.getInt("stockQuantity")
+                    );
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
             return material;
         } catch (SQLException e) {

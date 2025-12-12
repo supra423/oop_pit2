@@ -35,6 +35,10 @@ public class TransactionItem {
         this.subTotal = this.quantity * materialPrice;
     }
 
+    public void setTransactionId(int transactionId) {
+        this.transactionId = transactionId;
+    }
+
     public double getSubTotal() {
         return this.subTotal;
     }
