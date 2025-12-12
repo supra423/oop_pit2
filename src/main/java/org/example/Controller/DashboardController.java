@@ -85,6 +85,12 @@ public class DashboardController {
                     }
 
                     int quantity = Integer.parseInt(sQuantity);
+
+                    if (quantity <= 0) {
+                        JOptionPane.showMessageDialog(null, "Please input a quantity more than 0!");
+                        return;
+                    }
+
                     currTransaction.getTransactionItems().add(
                             new TransactionItem((int) rowData[0], quantity) // 0 is materialId
                     );
@@ -112,9 +118,12 @@ public class DashboardController {
     }
 
     public static void clearButton(Transaction currTransaction, JTextArea itemsArea, StringBuilder itemsAreaString) {
-        itemsArea.setText("");
-        itemsAreaString.setLength(0);
-        currTransaction.getTransactionItems().clear();
+        int option = JOptionPane.showConfirmDialog(null, "Clear text?");
+        if (option == JOptionPane.YES_OPTION) {
+            itemsArea.setText("");
+            itemsAreaString.setLength(0);
+            currTransaction.getTransactionItems().clear();
+        }
     }
 
     public static void recordBuyButton(Transaction currTransaction, JTextArea itemsArea, StringBuilder itemsAreaString, JTable materialsTable) {
