@@ -10,7 +10,7 @@ import java.util.*;
 // so i have to put a "_" to make it a valid identifier
 
 public class TransactionDAO {
-    static Connection conn = Database.getConn();
+    private static final Connection conn = Database.getConn();
 
     private TransactionDAO() {}
 

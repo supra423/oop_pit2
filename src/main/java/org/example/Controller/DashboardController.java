@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class DashboardController {
+    private DashboardController() {}
     public static void openAdminInterface(JFrame dashboardFrame, JButton button) {
         button.setEnabled(false);
         dashboardFrame.dispose();
