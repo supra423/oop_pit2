@@ -63,6 +63,10 @@ public class Transaction {
         this.transactionType = transactionType.toLowerCase().strip();
     }
 
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     @Override
     public String toString() {
         return "Transaction[TransactionId='" + this.transactionId + "', date(YYYY-MM-DD)='" + this.date + "', totalAmount=" + this.totalAmount + "', transactionType=" + this.transactionType + "]";

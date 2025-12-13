@@ -12,8 +12,8 @@ import java.util.Objects;
 public class DashboardInterface extends JFrame {
     private static JTextArea itemsArea = new JTextArea();
     private static JTable materialsTable;
-    private static Transaction currTransaction = new Transaction(LocalDate.now().toString());
     private static StringBuilder itemsAreaString = new StringBuilder();
+    private static Transaction currTransaction = new Transaction(LocalDate.now().toString());
 
     static ImageIcon logo;
     static ImageIcon rawLogo = new ImageIcon(

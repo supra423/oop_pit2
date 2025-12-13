@@ -15,6 +15,7 @@ public class AdminInterface extends JFrame {
             StyledButtonCreator.createStyledButton("Delete material", 12),
             StyledButtonCreator.createStyledButton("Get all materials", 12),
             StyledButtonCreator.createStyledButton("Get material by ID", 12),
+            StyledButtonCreator.createStyledButton("Append material quantity", 12),
             StyledButtonCreator.createStyledButton("Get transaction by ID", 12),
             StyledButtonCreator.createStyledButton("Get all transactions", 12),
             StyledButtonCreator.createStyledButton("Get transaction item by ID", 12),
@@ -32,24 +33,25 @@ public class AdminInterface extends JFrame {
     static {
         Image resizedImage = rawLogo.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         logo = new ImageIcon(resizedImage);
-
         // pass by reference kunohay, charrrr HAHAHAAHAHAHAHAH
         // because outputArea is an object, I can just pass around its reference
         // so that it can be modified directly from other classes, particularly the controller
+        // this is how you would do in-place mutation
         operationButtons[0].addActionListener(e -> AdminController.addMaterial(outputArea));
         operationButtons[1].addActionListener(e -> AdminController.deleteMaterial(outputArea));
         operationButtons[2].addActionListener(e -> AdminController.getAllMaterials(outputArea));
         operationButtons[3].addActionListener(e -> AdminController.getMaterialById(outputArea));
-        operationButtons[4].addActionListener(e -> AdminController.getTransactionById(outputArea));
-        operationButtons[5].addActionListener(e -> AdminController.getAllTransactions(outputArea));
-        operationButtons[6].addActionListener(e -> AdminController.getTransactionItemById(outputArea));
-        operationButtons[7].addActionListener(e -> AdminController.getAllTransactionItems(outputArea));
-        operationButtons[8].addActionListener(e -> AdminController.getTransactionItemsByTransactionId(outputArea));
-        operationButtons[9].addActionListener(e -> AdminController.deleteTransaction(outputArea)); // warning: this also deletes associated transaction items
-        operationButtons[10].addActionListener(e -> AdminController.totalMoneyFromBuying(outputArea));
-        operationButtons[11].addActionListener(e -> AdminController.totalMoneyFromSelling(outputArea));
-        operationButtons[12].addActionListener(e -> AdminController.averageMoneyFromBuying(outputArea));
-        operationButtons[13].addActionListener(e -> AdminController.averageMoneyFromSelling(outputArea));
+        operationButtons[4].addActionListener(e -> AdminController.appendMaterialQuantity(outputArea));
+        operationButtons[5].addActionListener(e -> AdminController.getTransactionById(outputArea));
+        operationButtons[6].addActionListener(e -> AdminController.getAllTransactions(outputArea));
+        operationButtons[7].addActionListener(e -> AdminController.getTransactionItemById(outputArea));
+        operationButtons[8].addActionListener(e -> AdminController.getAllTransactionItems(outputArea));
+        operationButtons[9].addActionListener(e -> AdminController.getTransactionItemsByTransactionId(outputArea));
+        operationButtons[10].addActionListener(e -> AdminController.deleteTransaction(outputArea)); // warning: this also deletes associated transaction items
+        operationButtons[11].addActionListener(e -> AdminController.totalMoneyFromBuying(outputArea));
+        operationButtons[12].addActionListener(e -> AdminController.totalMoneyFromSelling(outputArea));
+        operationButtons[13].addActionListener(e -> AdminController.averageMoneyFromBuying(outputArea));
+        operationButtons[14].addActionListener(e -> AdminController.averageMoneyFromSelling(outputArea));
     }
     public AdminInterface() {
         setTitle("The Garage");
@@ -126,7 +128,7 @@ public class AdminInterface extends JFrame {
 
         // scrollable panel inside the right panel
         JPanel buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.setPreferredSize(new Dimension(305, 1400));
+        buttonPanel.setPreferredSize(new Dimension(305, 1600));
         JScrollPane buttonScrollPane = new JScrollPane(buttonPanel);
         buttonScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         buttonScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

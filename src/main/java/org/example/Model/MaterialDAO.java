@@ -23,7 +23,7 @@ public class MaterialDAO {
                             rslt1.getDouble("sellPrice"),
                             rslt1.getInt("stockQuantity")
                     );
-                }
+                } else return null;
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -38,7 +38,8 @@ public class MaterialDAO {
         String sql = "SELECT * FROM Material";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql);
         ResultSet rslt1 = stmt1.executeQuery()) {
-            while (rslt1.next()) {
+            if (!rslt1.next()) return null;
+            do {
                 materials.add(new Material(
                         rslt1.getInt("materialId"),
                         rslt1.getString("materialName"),
@@ -47,7 +48,7 @@ public class MaterialDAO {
                         rslt1.getDouble("sellPrice"),
                         rslt1.getInt("stockQuantity")
                 ));
-            }
+            } while (rslt1.next());
             return materials;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -103,6 +104,18 @@ public class MaterialDAO {
             }
         } else {
             System.out.println("Transaction type is not recognized");
+        }
+    }
+
+    public static void incrementMaterialStock(int materialId, int quantityToAdd) {
+        String sql = "UPDATE Material SET stockQuantity = stockQuantity + ? WHERE materialId = ?";
+        if (getMaterial(materialId) == null) return;
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
+            stmt1.setInt(1, materialId);
+            stmt1.setInt(2, quantityToAdd);
+            stmt1.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

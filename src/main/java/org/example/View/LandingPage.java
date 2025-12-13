@@ -53,5 +53,4 @@ public class LandingPage extends JFrame {
         add(mainPanel);
         setVisible(true);
     }
-
 }

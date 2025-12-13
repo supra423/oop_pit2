@@ -27,7 +27,7 @@ public class TransactionDAO {
                             rslt1.getDouble("totalAmount"),
                             rslt1.getString("transactionType")
                     );
-                }
+                } else return null;
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -42,14 +42,15 @@ public class TransactionDAO {
         String sql = "SELECT * FROM Transaction_";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql);
              ResultSet rslt1 = stmt1.executeQuery()) {
-                while (rslt1.next()) {
+                if (!rslt1.next()) return null;
+                do {
                     transactions.add(new Transaction(
                             rslt1.getInt("transactionId"),
                             rslt1.getString("transactionDate"),
                             rslt1.getDouble("totalAmount"),
                             rslt1.getString("transactionType")
                     ));
-                }
+                } while (rslt1.next());
                 return transactions;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -70,7 +71,7 @@ public class TransactionDAO {
                         rslt1.getInt("quantity"),
                         rslt1.getDouble("subTotal")
                     );
-                }
+                } else return null;
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -85,7 +86,8 @@ public class TransactionDAO {
         String sql = "SELECT * FROM TransactionItem";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql);
         ResultSet rslt1 = stmt1.executeQuery()) {
-            while (rslt1.next()) {
+            if (!rslt1.next()) return null;
+            do {
                 transactionItems.add(new TransactionItem(
                         rslt1.getInt("transactionItemId"),
                         rslt1.getInt("transactionId"),
@@ -93,7 +95,7 @@ public class TransactionDAO {
                         rslt1.getInt("quantity"),
                         rslt1.getDouble("subTotal")
                 ));
-            }
+            } while (rslt1.next());
             return transactionItems;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -133,7 +135,8 @@ public class TransactionDAO {
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
             stmt1.setInt(1, transactionId);
             try (ResultSet rslt1 = stmt1.executeQuery()) {
-                while (rslt1.next()) {
+                if (!rslt1.next()) return null;
+                do {
                     transactionItems.add(new TransactionItem(
                             rslt1.getInt("transactionItemId"),
                             rslt1.getInt("transactionId"),
@@ -141,7 +144,7 @@ public class TransactionDAO {
                             rslt1.getInt("quantity"),
                             rslt1.getDouble("subTotal")
                     ));
-                }
+                } while (rslt1.next());
             }
             return transactionItems;
         } catch (SQLException e) {
