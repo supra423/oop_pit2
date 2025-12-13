@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class DashboardController {
+    private DashboardController() {}
     public static void openAdminInterface(JFrame dashboardFrame, JButton button) {
         button.setEnabled(false);
         dashboardFrame.dispose();
@@ -24,20 +25,23 @@ public class DashboardController {
     }
 
     public static DefaultTableModel getAllMaterials() {
-        Material[] materials = MaterialDAO.getAllMaterials().toArray(new Material[0]);
+        List<Material> materials = MaterialDAO.getAllMaterials();
+        if (materials == null) {
+            return new DefaultTableModel();
+        }
         String[] columnNames = {"ID", "Material name", "Unit of measure", "Buy price", "Sell price","Stock quantity"};
-        Object[][] data = new Object[materials.length][columnNames.length];
-        for (int i = 0; i < materials.length; i++) {
+        Object[][] data = new Object[materials.size()][columnNames.length];
+        for (int i = 0; i < materials.size(); i++) {
             // basically the 0 1 2 3 4 5 are the columns
             // 0 = id,
             // 1 = material name,
             // 2 = unit of measure, and so on...
-            data[i][0] = materials[i].materialId();
-            data[i][1] = materials[i].name();
-            data[i][2] = materials[i].unitOfMeasure();
-            data[i][3] = materials[i].buyPrice();
-            data[i][4] = materials[i].sellPrice();
-            data[i][5] = materials[i].stockQuantity();
+            data[i][0] = materials.get(i).materialId();
+            data[i][1] = materials.get(i).name();
+            data[i][2] = materials.get(i).unitOfMeasure();
+            data[i][3] = materials.get(i).buyPrice();
+            data[i][4] = materials.get(i).sellPrice();
+            data[i][5] = materials.get(i).stockQuantity();
         }
 
         return new DefaultTableModel(data, columnNames) {
@@ -147,6 +151,7 @@ public class DashboardController {
         currTransaction.calculateTotal();
         TransactionDAO.updateTotalAmount(currTransaction.getTotalAmount(), transactionId);
         currTransaction.getTransactionItems().clear();
+        currTransaction.setTotalAmount(0.0);
         itemsArea.setText("");
         itemsAreaString.setLength(0);
         materialsTable.setModel(getAllMaterials());
@@ -175,11 +180,11 @@ public class DashboardController {
         currTransaction.calculateTotal();
         TransactionDAO.updateTotalAmount(currTransaction.getTotalAmount(), transactionId);
         currTransaction.getTransactionItems().clear();
+        currTransaction.setTotalAmount(0.0);
         itemsArea.setText("");
         itemsAreaString.setLength(0);
         materialsTable.setModel(getAllMaterials());
     }
-
 
     public static boolean ifStockQuantityIsSufficient(List<TransactionItem> transactionItems) {
         // this method is only for the sell transaction,

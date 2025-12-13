@@ -11,60 +11,60 @@ public class AdminController {
     public static void addMaterial(JTextArea outputArea) {
         String materialName;
         String unitOfMeasure;
-        Double materialBuyPrice;
-        Double materialSellPrice;
-        Integer stockQuantity;
-        while (true) {
+        double materialBuyPrice = 0.0;
+        double materialSellPrice = 0.0;
+        int stockQuantity = 0;
 
+        while (true) {
             materialName = JOptionPane.showInputDialog("Input material name");
             if (materialName == null) {
                 return;
             } else if (materialName.isBlank()) {
                 JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                continue;
-            }
+            } else break;
+        }
+        while (true) {
             unitOfMeasure = JOptionPane.showInputDialog("Input unit of measure");
             if (unitOfMeasure == null) {
                 return;
-            }
-            else if (unitOfMeasure.isBlank()) {
+            }  else if (unitOfMeasure.isBlank()) {
                 JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                continue;
-            }
-            if (unitOfMeasure.length() > 5) {
+            } else if (unitOfMeasure.length() > 5) {
                 JOptionPane.showMessageDialog(null, "Max 5 characters!");
-                continue;
-            }
+            } else break;
+        }
             try {
-                String stringMaterialBuyPrice = JOptionPane.showInputDialog("Input buy price (per " + unitOfMeasure + ")");
-                if (stringMaterialBuyPrice == null) {
-                    return;
-                } else if (stringMaterialBuyPrice.isBlank()) {
-                    JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                    continue;
+                String stringMaterialBuyPrice, stringMaterialSellPrice, stringStockQuantity;
+                while (true) {
+                    stringMaterialBuyPrice = JOptionPane.showInputDialog("Input buy price (per " + unitOfMeasure + ")");
+                    if (stringMaterialBuyPrice == null) {
+                        return;
+                    } else if (stringMaterialBuyPrice.isBlank()) {
+                        JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
+                    } else break;
                 }
-                String stringMaterialSellPrice = JOptionPane.showInputDialog("Input sell price (per " + unitOfMeasure + ")");
-                if (stringMaterialBuyPrice == null) {
-                    return;
-                } else if (stringMaterialBuyPrice.isBlank()) {
-                    JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                    continue;
+                while (true) {
+                    stringMaterialSellPrice = JOptionPane.showInputDialog("Input sell price (per " + unitOfMeasure + ")");
+                    if (stringMaterialSellPrice == null) {
+                        return;
+                    } else if (stringMaterialSellPrice.isBlank()) {
+                        JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
+                    } else break;
                 }
-                String stringStockQuantity = JOptionPane.showInputDialog("Input initial stock quantity (per " + unitOfMeasure + ")");
-                if (stringStockQuantity == null) {
-                    return;
-                } else if (stringStockQuantity.isBlank()) {
-                    JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
-                    continue;
+                while (true) {
+                    stringStockQuantity = JOptionPane.showInputDialog("Input initial stock quantity (per " + unitOfMeasure + ")");
+                    if (stringStockQuantity == null) {
+                        return;
+                    } else if (stringStockQuantity.isBlank()) {
+                        JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
+                    } else break;
                 }
                 materialBuyPrice = Double.parseDouble(stringMaterialBuyPrice);
                 materialSellPrice = Double.parseDouble(stringMaterialSellPrice);
                 stockQuantity = Integer.parseInt(stringStockQuantity);
-                break;
             } catch (NumberFormatException e2) {
                 JOptionPane.showMessageDialog(null, "Please only input numbers!");
             }
-        }
         Material newMaterial = new Material(materialName, unitOfMeasure, materialBuyPrice, materialSellPrice, stockQuantity);
         outputArea.setText("Addition successful!");
         MaterialDAO.addMaterial(newMaterial);
@@ -100,7 +100,12 @@ public class AdminController {
 
     public static void getAllMaterials(JTextArea outputArea) {
         outputArea.setText("");
-        for (Material material : MaterialDAO.getAllMaterials()) {
+        List<Material> materials = MaterialDAO.getAllMaterials();
+        if (materials == null) {
+            outputArea.setText("No rows found! Try adding a material!");
+            return;
+        }
+        for (Material material : materials) {
             outputArea.append(material.toString() + "\n\n");
         }
     }
@@ -128,6 +133,40 @@ public class AdminController {
             }
             outputArea.setText(fetchedMaterial.toString());
             break;
+        }
+    }
+
+    public static void appendMaterialQuantity(JTextArea outputArea) {
+        int materialId, quantityToAdd;
+
+        try {
+            String stringMaterialId, stringQuantityToAdd;
+            while (true) {
+                stringMaterialId = JOptionPane.showInputDialog("Enter material ID to search");
+                if (stringMaterialId == null) {
+                    return;
+                } else if (stringMaterialId.isBlank()) {
+                    JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
+                } else break;
+            }
+            while (true) {
+                stringQuantityToAdd = JOptionPane.showInputDialog("Enter amount to add");
+                if (stringQuantityToAdd == null) {
+                    return;
+                } else if (stringQuantityToAdd.isBlank()) {
+                    JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
+                } else break;
+            }
+            materialId = Integer.parseInt(stringMaterialId);
+            if (MaterialDAO.getMaterial(materialId) == null) {
+                outputArea.setText("Material does not exist!");
+                return;
+            }
+            quantityToAdd = Integer.parseInt(stringQuantityToAdd);
+            MaterialDAO.incrementMaterialStock(materialId, quantityToAdd);
+            outputArea.setText("Quantity successfully appended!");
+        } catch (NumberFormatException e1) {
+            JOptionPane.showMessageDialog(null, "Please only input numbers!");
         }
     }
 
@@ -159,7 +198,12 @@ public class AdminController {
 
     public static void getAllTransactions(JTextArea outputArea) {
         outputArea.setText("");
-        for (Transaction transaction : TransactionDAO.getAllTransactions()) {
+        List<Transaction> transactions = TransactionDAO.getAllTransactions();
+        if (transactions == null) {
+            outputArea.setText("No rows found! Try recording a transaction!");
+            return;
+        }
+        for (Transaction transaction : transactions) {
             outputArea.append(transaction.toString() + "\n\n");
         }
     }
@@ -191,7 +235,12 @@ public class AdminController {
 
     public static void getAllTransactionItems(JTextArea outputArea) {
         outputArea.setText("");
-        for (TransactionItem transactionItem : TransactionDAO.getAllTransactionItems()) {
+        List<TransactionItem> transactionItems = TransactionDAO.getAllTransactionItems();
+        if (transactionItems == null) {
+            outputArea.setText("No rows found! Try adding a transaction to add associated transactions items");
+            return;
+        }
+        for (TransactionItem transactionItem : transactionItems) {
             outputArea.append(transactionItem.toString() + "\n\n");
         }
     }

@@ -5,6 +5,7 @@ import org.example.View.DashboardInterface;
 import javax.swing.*;
 
 public class LandingPageController {
+    private LandingPageController() {}
     public static void openDashboard(JFrame landingPageFrame, JButton button) {
         button.setEnabled(false);
         landingPageFrame.dispose();

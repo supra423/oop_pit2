@@ -1,7 +1,6 @@
 package org.example;
 
 import org.example.View.LandingPage;
-
 import javax.swing.*;
 
 public class Main {

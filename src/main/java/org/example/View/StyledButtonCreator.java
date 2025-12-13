@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class StyledButtonCreator {
+    private StyledButtonCreator() {}
     public static JButton createStyledButton(String text, int fontSize) {
         JButton button = new JButton(text) {
             @Override
