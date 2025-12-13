@@ -158,10 +158,12 @@ public class DashboardInterface extends JFrame {
         JButton recordBuyButton = StyledButtonCreator.createStyledButton("RECORD A BUY", 18);
         recordBuyButton.setPreferredSize(new Dimension(250, 55));
         recordBuyButton.addActionListener(e -> DashboardController.recordBuyButton(currTransaction, itemsArea, itemsAreaString, materialsTable));
+        recordBuyButton.setToolTipText("When the junkshop bought a material");
 
         JButton recordSellButton = StyledButtonCreator.createStyledButton("RECORD A SELL", 18);
         recordSellButton.setPreferredSize(new Dimension(250, 55));
         recordSellButton.addActionListener(e -> DashboardController.recordSellButton(currTransaction, itemsArea, itemsAreaString, materialsTable));
+        recordSellButton.setToolTipText("When the junkshop sold a material");
 
         JButton adminButton = StyledButtonCreator.createStyledButton("ADMIN", 18);
         JButton backButton = StyledButtonCreator.createStyledButton("BACK", 18);
