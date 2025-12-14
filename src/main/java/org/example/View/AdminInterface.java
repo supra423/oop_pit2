@@ -13,19 +13,19 @@ public class AdminInterface extends JFrame {
     private static final JButton[] operationButtons = {
             StyledButtonCreator.createStyledButton("Add material", 12),
             StyledButtonCreator.createStyledButton("Delete material", 12),
-            StyledButtonCreator.createStyledButton("Get all materials", 12),
-            StyledButtonCreator.createStyledButton("Get material by ID", 12),
+            StyledButtonCreator.createStyledButton("View all materials", 12),
+            StyledButtonCreator.createStyledButton("Find material by ID", 12),
             StyledButtonCreator.createStyledButton("Append material quantity", 12),
-            StyledButtonCreator.createStyledButton("Get transaction by ID", 12),
-            StyledButtonCreator.createStyledButton("Get all transactions", 12),
-            StyledButtonCreator.createStyledButton("Get transaction item by ID", 12),
+            StyledButtonCreator.createStyledButton("Find transaction by ID", 12),
+            StyledButtonCreator.createStyledButton("View all transactions", 12),
+            StyledButtonCreator.createStyledButton("Find transaction item by ID", 12),
             StyledButtonCreator.createStyledButton("Get all transaction items", 12),
             StyledButtonCreator.createStyledButton("Get transaction items by transaction ID", 12),
-            StyledButtonCreator.createStyledButton("<html>Delete transaction<br>(Includes associated transaction items)</html>", 12),
-            StyledButtonCreator.createStyledButton("Total money from buying", 12),
-            StyledButtonCreator.createStyledButton("Total money from selling", 12),
-            StyledButtonCreator.createStyledButton("Average money from buying", 12),
-            StyledButtonCreator.createStyledButton("Average money from selling", 12),
+            StyledButtonCreator.createStyledButton("Roll back transaction", 12),
+            StyledButtonCreator.createStyledButton("Total spent from buying", 12),
+            StyledButtonCreator.createStyledButton("Total earned from selling", 12),
+            StyledButtonCreator.createStyledButton("Average spent from buying", 12),
+            StyledButtonCreator.createStyledButton("Average earned from selling", 12),
     };
     static ImageIcon logo;
     static ImageIcon rawLogo = new ImageIcon(
@@ -47,7 +47,7 @@ public class AdminInterface extends JFrame {
         operationButtons[7].addActionListener(e -> AdminController.getTransactionItemById(outputArea));
         operationButtons[8].addActionListener(e -> AdminController.getAllTransactionItems(outputArea));
         operationButtons[9].addActionListener(e -> AdminController.getTransactionItemsByTransactionId(outputArea));
-        operationButtons[10].addActionListener(e -> AdminController.deleteTransaction(outputArea)); // warning: this also deletes associated transaction items
+        operationButtons[10].addActionListener(e -> AdminController.rollBackTransaction(outputArea)); // warning: this also deletes associated transaction items
         operationButtons[11].addActionListener(e -> AdminController.totalMoneyFromBuying(outputArea));
         operationButtons[12].addActionListener(e -> AdminController.totalMoneyFromSelling(outputArea));
         operationButtons[13].addActionListener(e -> AdminController.averageMoneyFromBuying(outputArea));
