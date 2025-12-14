@@ -276,12 +276,12 @@ public class AdminController {
         }
     }
 
-    public static void deleteTransaction(JTextArea outputArea) {
+    public static void rollBackTransaction(JTextArea outputArea) {
         int transactionId = 0;
 
         while (true) {
             try {
-                String stringTransactionId = JOptionPane.showInputDialog("Enter transaction ID to delete\n(THIS INCLUDES ASSOCIATED TRANSACTION ITEMS)");
+                String stringTransactionId = JOptionPane.showInputDialog("Enter transaction ID to roll back\n(Deletes transaction, its associated transaction items, and resets the stock)");
                 if (stringTransactionId == null) {
                     return;
                 } else if (stringTransactionId.isBlank()) {
@@ -297,7 +297,7 @@ public class AdminController {
                 outputArea.setText("Transaction not found");
                 break;
             }
-            TransactionDAO.deleteTransaction(transactionId);
+            TransactionDAO.rollBackTransaction(transactionId);
             outputArea.setText("Deletion successful!");
             break;
         }

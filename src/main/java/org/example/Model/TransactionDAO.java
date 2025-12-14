@@ -1,7 +1,5 @@
 package org.example.Model;
 
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
-
 import java.sql.*;
 import java.util.*;
 
@@ -165,9 +163,17 @@ public class TransactionDAO {
             throw new RuntimeException(e);
         }
     }
-    public static void deleteTransaction(int transactionId) {
+    public static void rollBackTransaction(int transactionId) {
         // this bad boy deletes TransactionItems that are referencing a particular
         // Transaction row, then after that it deletes the Transaction row itself
+        // And it also reverts the stock quantities back, as if the transaction never
+        // happened
+        Transaction transaction = getTransaction(transactionId);
+        transaction.setTransactionItems(getTransactionItemsByTransactionId(transactionId));
+        if (transaction.getTransactionType().strip().equalsIgnoreCase("buy")) transaction.setTransactionType("sell");
+        else transaction.setTransactionType("buy");
+
+        MaterialDAO.updateMaterialStock(transaction);
         String sql = "DELETE FROM TransactionItem WHERE transactionId = ?";
         try (PreparedStatement stmt1 = conn.prepareStatement(sql)) {
             stmt1.setInt(1, transactionId);
@@ -176,8 +182,8 @@ public class TransactionDAO {
             throw new RuntimeException(e);
         }
 
-        String sql1 = "DELETE FROM Transaction_ WHERE transactionId = ?";
-        try (PreparedStatement stmt1 = conn.prepareStatement(sql1)) {
+        String sql2 = "DELETE FROM Transaction_ WHERE transactionId = ?";
+        try (PreparedStatement stmt1 = conn.prepareStatement(sql2)) {
             stmt1.setInt(1, transactionId);
             stmt1.executeUpdate();
         } catch (SQLException e) {

@@ -47,6 +47,10 @@ public class Transaction {
         return transactionItems;
     }
 
+    public void setTransactionItems(List<TransactionItem> transactionItems) {
+        this.transactionItems = transactionItems;
+    }
+
     public String getDate() {
         return this.date;
     }
