@@ -163,7 +163,7 @@ public class TransactionDAO {
             throw new RuntimeException(e);
         }
     }
-    public static void deleteTransaction(int transactionId) {
+    public static void rollBackTransaction(int transactionId) {
         // this bad boy deletes TransactionItems that are referencing a particular
         // Transaction row, then after that it deletes the Transaction row itself
         // And it also reverts the stock quantities back, as if the transaction never

@@ -297,7 +297,7 @@ public class AdminController {
                 outputArea.setText("Transaction not found");
                 break;
             }
-            TransactionDAO.deleteTransaction(transactionId);
+            TransactionDAO.rollBackTransaction(transactionId);
             outputArea.setText("Deletion successful!");
             break;
         }
