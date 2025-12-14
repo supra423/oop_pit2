@@ -147,6 +147,8 @@ public class AdminController {
                     return;
                 } else if (stringMaterialId.isBlank()) {
                     JOptionPane.showMessageDialog(null, "Please don't leave the field blank!");
+                } else if (MaterialDAO.getMaterial(Integer.parseInt(stringMaterialId)) == null) {
+                    JOptionPane.showMessageDialog(null, "Material not found! Make sure to input the right ID");
                 } else break;
             }
             while (true) {
